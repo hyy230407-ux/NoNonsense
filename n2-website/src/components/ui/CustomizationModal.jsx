@@ -18,7 +18,7 @@ const CustomizationModal = () => {
   const [riceSize, setRiceSize] = useState('200g');
   const [addons, setAddons] = useState({
     extraChicken: 0,
-    extraRanch: 0,
+    butterChickenSauce: 0,
     softBoiledEgg: 0,
     extraRice: 0
   });
@@ -27,7 +27,7 @@ const CustomizationModal = () => {
 
   const addonPrices = {
     extraChicken: 1.90,
-    extraRanch: 1.00,
+    butterChickenSauce: 1.00,
     softBoiledEgg: 0.80,
     extraRice: 1.00
   };
@@ -37,7 +37,7 @@ const CustomizationModal = () => {
   const calculateTotal = () => {
     let total = getBasePrice();
     total += addons.extraChicken * addonPrices.extraChicken;
-    total += addons.extraRanch * addonPrices.extraRanch;
+    total += addons.butterChickenSauce * addonPrices.butterChickenSauce;
     total += addons.softBoiledEgg * addonPrices.softBoiledEgg;
     total += addons.extraRice * addonPrices.extraRice;
     return (total * totalQuantity).toFixed(2);
@@ -56,7 +56,7 @@ const CustomizationModal = () => {
       .map(([key, qty]) => {
         const labels = {
           extraChicken: 'Extra Chicken',
-          extraRanch: 'Extra Ranch Sauce',
+          butterChickenSauce: 'Butter Chicken Sauce',
           softBoiledEgg: 'Soft Boiled Egg',
           extraRice: 'Extra Rice'
         };
@@ -202,18 +202,18 @@ const CustomizationModal = () => {
                   </div>
                 </div>
 
-                <div className={`addon-modern-item ${addons.extraRanch > 0 ? 'active' : ''}`}>
-                  <div className="addon-icon-box">🥫</div>
+                <div className={`addon-modern-item ${addons.butterChickenSauce > 0 ? 'active' : ''}`}>
+                  <div className="addon-icon-box">🍛</div>
                   <div className="addon-details">
-                    <span className="addon-title">Extra Ranch Sauce</span>
-                    <span className="addon-info">Scratch-made · no seed oils · no artificials</span>
+                    <span className="addon-title">Butter Chicken Sauce</span>
+                    <span className="addon-info">In-house recipe · cashew nut paste · real spices</span>
                   </div>
                   <div className="addon-right">
                     <span className="addon-cost">+$1.00</span>
                     <div className="addon-qty-controls">
-                      <button onClick={() => updateAddon('extraRanch', -1)}><Minus size={16} /></button>
-                      <span>{addons.extraRanch}</span>
-                      <button className="plus-btn" onClick={() => updateAddon('extraRanch', 1)}><Plus size={16} /></button>
+                      <button onClick={() => updateAddon('butterChickenSauce', -1)}><Minus size={16} /></button>
+                      <span>{addons.butterChickenSauce}</span>
+                      <button className="plus-btn" onClick={() => updateAddon('butterChickenSauce', 1)}><Plus size={16} /></button>
                     </div>
                   </div>
                 </div>
