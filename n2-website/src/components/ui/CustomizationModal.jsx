@@ -13,10 +13,7 @@ const CustomizationModal = () => {
   } = useCart();
 
 
-  if (!meal) return null;
-  const isOpen = !!meal;
-
-  const isSnack = meal.isSnack;
+  const isSnack = meal?.isSnack || false;
   const [totalQuantity, setTotalQuantity] = useState(1);
   const [riceSize, setRiceSize] = useState('200g');
   const [addons, setAddons] = useState({
@@ -25,6 +22,8 @@ const CustomizationModal = () => {
     softBoiledEgg: 0,
     extraRice: 0
   });
+
+  if (!meal) return null;
 
   const addonPrices = {
     extraChicken: 1.90,
