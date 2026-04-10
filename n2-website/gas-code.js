@@ -18,7 +18,7 @@ function doPost(e) {
   
   // Set up header row if the sheet is empty
   if (sheet.getLastRow() === 0) {
-    sheet.appendRow(['Timestamp', 'Name', 'Email', 'Phone', 'Order Items', 'Base Sauces', 'Add-ons', 'Total Price']);
+    sheet.appendRow(['Timestamp', 'Name', 'Email', 'Phone', 'Order Items', 'Base Sauces', 'Add-ons', 'Collection Day', 'Total Price']);
   }
   
   try {
@@ -44,6 +44,11 @@ function doPost(e) {
       return item.title + ": " + (sauce ? sauce.replace("Base Sauce: ", "") : "Standard");
     }).join("\n");
 
+    var collectionDays = (data.items || []).map(function(item) {
+      if (!item.customizations || !item.customizations.collectionDay) return "Next Day";
+      return item.title + ": " + item.customizations.collectionDay;
+    }).join("\n");
+
     var addons = (data.items || []).map(function(item) {
       if (!item.customizations) return "None";
       var parts = [];
@@ -62,7 +67,7 @@ function doPost(e) {
 
     var totalPrice = data.totalPrice || "0";
     
-    sheet.appendRow([timestamp, name, email, phone, items, baseSauces, addons, totalPrice]);
+    sheet.appendRow([timestamp, name, email, phone, items, baseSauces, addons, collectionDays, totalPrice]);
 
     // --- EMAIL CONFIRMATION SYSTEM ---
     if (email !== "N/A") {
@@ -72,13 +77,14 @@ function doPost(e) {
                    "Thank you for your order with N2! We've received your details and are preparing your high-protein meal.\n\n" +
                    "--- ORDER SUMMARY ---\n" +
                    items + "\n\n" +
+                   "--- COLLECTION DAYS ---\n" +
+                   collectionDays + "\n\n" +
                    "--- BASE SAUCES ---\n" +
                    baseSauces + "\n\n" +
                    "--- OTHER ADD-ONS ---\n" +
                    addons + "\n\n" +
                    "Total Price: $" + totalPrice + "\n\n" +
                    "--- COLLECTION DETAILS ---\n" +
-                   "Date: Tomorrow (Next-day collection)\n" +
                    "Time: 11:00 AM – 3:00 PM\n" +
                    "Location: N2 Kiosk, NYP North Canteen\n\n" +
                    "If you haven't already, please ensure you've sent your payment screenshot to +65 8585 2055 via WhatsApp.\n\n" +
@@ -92,6 +98,8 @@ function doPost(e) {
                        "<div style='background: #f9f9f9; padding: 15px; border-radius: 8px; margin: 20px 0;'>" +
                         "<h3>Order Summary</h3>" +
                         "<pre style='white-space: pre-wrap; font-family: inherit;'>" + items + "</pre>" +
+                        "<h4>Collection Days:</h4>" +
+                        "<p style='font-size: 0.9em; color: #00f1d9;'>" + collectionDays.replace(/\n/g, '<br>') + "</p>" +
                         "<h4>Base Sauces:</h4>" +
                         "<p style='font-size: 0.9em; color: #666;'>" + baseSauces.replace(/\n/g, '<br>') + "</p>" +
                         "<h4>Other Add-ons:</h4>" +
@@ -100,9 +108,13 @@ function doPost(e) {
                        "</div>" +
                        "<div style='border-left: 4px solid #00f1d9; padding-left: 15px; margin: 20px 0;'>" +
                        "<h4>Collection Info</h4>" +
-                       "<p><strong>When:</strong> Tomorrow (11 AM – 3 PM)<br>" +
+                       "<p><strong>Time:</strong> 11 AM – 3 PM<br>" +
                        "<strong>Where:</strong> N2 Kiosk, NYP North Canteen</p>" +
                        "</div>" +
+                       "<p style='font-size: 0.9em; color: #888;'>Reminder: Please WhatsApp your payment screenshot to <strong>+65 8585 2055</strong> if you haven't done so.</p>" +
+                       "<hr style='border: 0; border-top: 1px solid #eee; margin: 20px 0;'>" +
+                       "<p style='text-align: center; color: #aaa; font-size: 0.8em;'>N2 - High Protein · Global Flavours · NYP North Canteen</p>" +
+                       "</div>";
                        "<p style='font-size: 0.9em; color: #888;'>Reminder: Please WhatsApp your payment screenshot to <strong>+65 8585 2055</strong> if you haven't done so.</p>" +
                        "<hr style='border: 0; border-top: 1px solid #eee; margin: 20px 0;'>" +
                        "<p style='text-align: center; color: #aaa; font-size: 0.8em;'>N2 - High Protein · Global Flavours · NYP North Canteen</p>" +

@@ -21,15 +21,18 @@ const CustomizationModal = () => {
     extraRice: 0
   });
 
-  const [extraChickenFlavors, setExtraChickenFlavors] = useState({
-    butter: 0,
-    pepper: 0
-  });
-
   const sauceData = [
-    { id: 'pepper', name: 'Black Pepper', icon: '/images/black_pepper_sauce_cup.png', chickenIcon: '/images/black_pepper_chicken_flavor.png', color: '#555' },
-    { id: 'butter', name: 'Butter Chicken', icon: '/images/butter_chicken_sauce_cup.png', chickenIcon: '/images/butter_chicken_chicken_flavor.png', color: '#ffb347' },
-    { id: 'ranch', name: 'Creamy Ranch', icon: '/images/creamy_ranch_sauce_cup.png', chickenIcon: '/images/grilled_chicken_serving.png', color: '#f8f9fa' }
+    { id: 'pepper', name: 'Black Pepper', icon: '/images/black_pepper_sauce_cup.png', color: '#555' },
+    { id: 'butter', name: 'Butter Chicken', icon: '/images/butter_chicken_sauce_cup.png', color: '#ffb347' },
+    { id: 'ranch', name: 'Creamy Ranch', icon: '/images/creamy_ranch_sauce_cup.png', color: '#f8f9fa' }
+  ];
+
+  const flavorData = [
+    { id: 'butter', name: 'Butter Chicken', icon: '/images/butter_chicken_chicken_flavor.png', color: '#ffb347' },
+    { id: 'jalapeno', name: 'Jalapeno', icon: '/images/jalapeno_chicken_flavor_1775835405567.png', color: '#4ade80' },
+    { id: 'nashville', name: 'Nashville Hot Honey', icon: '/images/grilled_chicken_serving.png', color: '#ef4444' },
+    { id: 'mediterranean', name: 'Mediterranean', icon: '/images/grilled_chicken_serving.png', color: '#60a5fa' },
+    { id: 'jerk', name: 'Jamaican Jerk', icon: '/images/grilled_chicken_serving.png', color: '#fbbf24' }
   ];
 
   const getDefaultSauce = () => {
@@ -41,13 +44,30 @@ const CustomizationModal = () => {
   };
 
   const [selectedBaseSauce, setSelectedBaseSauce] = useState(getDefaultSauce());
+  const [extraChickenFlavors, setExtraChickenFlavors] = useState({
+    butter: 0, jalapeno: 0, nashville: 0, mediterranean: 0, jerk: 0
+  });
   const [extraSauces, setExtraSauces] = useState({
-    butter: 0,
-    pepper: 0,
-    ranch: 0
+    butter: 0, pepper: 0, ranch: 0
   });
 
+  // Calendar Logic
+  const getCurrentLaunchWeekDays = () => {
+    // Current date for logic: April 10, 2026 (Friday)
+    // Next Week: April 13-17
+    // Launch Week restriction: Only Wed (15), Thu (16), Fri (17)
+    return [
+      { id: 'mon', name: 'Mon', date: 'Apr 13', status: 'closed' },
+      { id: 'tue', name: 'Tue', nameFull: 'Tuesday', date: 'Apr 14', status: 'closed' },
+      { id: 'wed', name: 'Wed', nameFull: 'Wednesday', date: '15 Apr', status: 'open' },
+      { id: 'thu', name: 'Thu', nameFull: 'Thursday', date: '16 Apr', status: 'open' },
+      { id: 'fri', name: 'Fri', nameFull: 'Friday', date: '17 Apr', status: 'open' }
+    ];
+  };
+
+  const [selectedDay, setSelectedDay] = useState(null);
   const [isExtraChickenOpen, setIsExtraChickenOpen] = useState(true);
+  const [error, setError] = useState(null);
 
   if (!meal) return null;
 
@@ -98,8 +118,14 @@ const CustomizationModal = () => {
       [id]: Math.max(0, prev[id] + delta)
     }));
   };
-
   const handleAddToCart = () => {
+    if (!selectedDay) {
+      setError('Please select a collection day');
+      // Scroll to calendar
+      document.querySelector('.collection-calendar-section')?.scrollIntoView({ behavior: 'smooth' });
+      return;
+    }
+
     const selectedAddons = [
       `Base Sauce: ${sauceData.find(s => s.id === selectedBaseSauce).name}`,
       ...Object.entries(addons)
@@ -120,10 +146,12 @@ const CustomizationModal = () => {
       ...Object.entries(extraChickenFlavors)
         .filter(([_, qty]) => qty > 0)
         .map(([id, qty]) => {
-          const flavor = sauceData.find(f => f.id === id);
+          const flavor = flavorData.find(f => f.id === id);
           return `Extra ${flavor.name} (x${qty})`;
         })
     ];
+
+    const dayInfo = getCurrentLaunchWeekDays().find(d => d.id === selectedDay);
 
     const customizedItem = {
       ...meal,
@@ -131,7 +159,8 @@ const CustomizationModal = () => {
       quantity: totalQuantity,
       customizations: {
         riceSize: isSnack ? null : riceSize,
-        addons: selectedAddons
+        addons: selectedAddons,
+        collectionDay: `${dayInfo.nameFull || dayInfo.name} (${dayInfo.date})`
       }
     };
 
@@ -164,14 +193,31 @@ const CustomizationModal = () => {
 
         <div className="modal-scroll-area">
           <div className="modal-body-padding">
-            {/* Collection Alert */}
-            <div className="collection-alert">
-              <Calendar size={20} className="text-cyan" />
-              <div className="alert-text">
-                <strong>Pre-order for next-day collection</strong>
-                <span>Order today → collect tomorrow · 11 AM – 3 PM</span>
+            {/* Collection Calendar Logic */}
+            <section className="modal-section collection-calendar-section">
+              <h3 className="section-label">SELECT COLLECTION DAY</h3>
+              <div className="calendar-selection-grid">
+                {getCurrentLaunchWeekDays().map((day) => (
+                  <button 
+                    key={day.id}
+                    className={`calendar-day-btn ${day.status} ${selectedDay === day.id ? 'active' : ''}`}
+                    disabled={day.status === 'closed'}
+                    onClick={() => {
+                      setSelectedDay(day.id);
+                      setError(null);
+                    }}
+                  >
+                    <span className="day-abbr">{day.name}</span>
+                    <span className="day-date">{day.date}</span>
+                    <span className="day-badge">{day.status === 'open' ? 'OPEN' : 'CLOSED'}</span>
+                  </button>
+                ))}
               </div>
-            </div>
+              <p className="calendar-instruction">
+                Pre-orders this week are for collection on <strong>Wednesday to Friday</strong> next week.
+              </p>
+              {error && <div className="selection-error-msg">{error}</div>}
+            </section>
 
             {/* Global Quantity */}
             <section className="modal-section">
@@ -251,11 +297,11 @@ const CustomizationModal = () => {
                   <div className="accordion-content">
                     <div className="flavor-selection-label">CHOOSE FLAVOUR</div>
                     <div className="flavor-list">
-                      {sauceData.filter(s => s.id !== 'ranch').map(flavor => (
+                      {flavorData.map(flavor => (
                         <div key={flavor.id} className="flavor-item">
                           <div className="flavor-left">
                             <div className="flavor-img">
-                              <img src={flavor.chickenIcon} alt={flavor.name} />
+                              <img src={flavor.icon} alt={flavor.name} />
                             </div>
                             <div className="flavor-info">
                               <div className="flavor-name">{flavor.name}</div>
@@ -359,12 +405,12 @@ const CustomizationModal = () => {
               </div>
             </section>
 
-            {/* Collection Details */}
+            {/* Collection Details Reminder */}
             <section className="modal-section collection-section">
-              <h3 className="section-label">COLLECTION DETAILS</h3>
+              <h3 className="section-label">COLLECTION LOCATION</h3>
               <div className="collection-card">
-                <strong>{dateStr}</strong>
-                <span>11:00 AM – 3:00 PM · N2 Kiosk, NYP North Canteen</span>
+                <strong>11:00 AM – 3:00 PM</strong>
+                <span>N2 Kiosk, NYP North Canteen</span>
               </div>
             </section>
           </div>

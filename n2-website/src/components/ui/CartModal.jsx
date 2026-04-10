@@ -45,7 +45,7 @@ const CartModal = () => {
     // 4. Click 'Deploy' > 'New Deployment' > 'Web App'.
     // 5. 'Execute as: Me' and 'Who has access: Anyone'.
     // 6. Copy the Deployment URL and paste it below:
-    const GAS_URL = 'https://script.google.com/macros/s/AKfycbzyoc7RzRVxnhBrtRk654IOc2ySEz09IEgeKt6ubZs6JtbzFYIrOnmk9awBel6X_EQY/exec'; 
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbz_EcHWw4XlATAZ1dS45s93ECg8S8Guf2y3gEZwzjihD0NSyBXubuEkbyqPceUtZJog_A/exec'; 
     // -------------------------------------------------------------------------
 
     const orderData = {
@@ -131,7 +131,13 @@ const CartModal = () => {
                         
                         {item.customizations && (
                           <div className="cart-item-customs">
-                            <span className="custom-tag">{item.customizations.riceSize}</span>
+                            <span className="custom-tag rice-tag">{item.customizations.riceSize}</span>
+                            {item.customizations.collectionDay && (
+                              <span className="custom-tag day-tag">
+                                <Calendar size={12} className="icon-mr-xs" />
+                                {item.customizations.collectionDay}
+                              </span>
+                            )}
                             {item.customizations.addons.map((addon, idx) => (
                               <span key={idx} className="custom-tag">{addon}</span>
                             ))}
