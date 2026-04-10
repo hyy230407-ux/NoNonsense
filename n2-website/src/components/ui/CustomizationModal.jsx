@@ -29,10 +29,10 @@ const CustomizationModal = () => {
 
   const flavorData = [
     { id: 'butter', name: 'Butter Chicken', icon: '/images/butter_chicken_chicken_flavor.png', color: '#ffb347' },
-    { id: 'jalapeno', name: 'Jalapeno', icon: '/images/jalapeno_chicken_flavor_1775835405567.png', color: '#4ade80' },
-    { id: 'nashville', name: 'Nashville Hot Honey', icon: '/images/grilled_chicken_serving.png', color: '#ef4444' },
-    { id: 'mediterranean', name: 'Mediterranean', icon: '/images/grilled_chicken_serving.png', color: '#60a5fa' },
-    { id: 'jerk', name: 'Jamaican Jerk', icon: '/images/grilled_chicken_serving.png', color: '#fbbf24' }
+    { id: 'jalapeno', name: 'Jalapeno', icon: '/images/jalapeno_chicken.png', color: '#4ade80' },
+    { id: 'nashville', name: 'Nashville Hot Honey', icon: '/images/nashville_chicken.png', color: '#ef4444' },
+    { id: 'mediterranean', name: 'Mediterranean', icon: '/images/mediterranean_chicken.png', color: '#60a5fa' },
+    { id: 'jerk', name: 'Jamaican Jerk', icon: '/images/jerk_chicken.png', color: '#fbbf24' }
   ];
 
   const getDefaultSauce = () => {
