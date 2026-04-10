@@ -213,6 +213,28 @@
   gap: 10px;
 }
 
+.collection-reminder {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: rgba(0, 241, 217, 0.05);
+  border: 1px solid rgba(0, 241, 217, 0.1);
+  padding: 16px;
+  border-radius: 12px;
+  text-align: left;
+}
+
+.collection-reminder p {
+  font-size: 0.9rem;
+  line-height: 1.4;
+  margin: 0;
+  color: #ccc;
+}
+
+.collection-reminder strong {
+  color: var(--accent-cyan);
+}
+
 .summary-item {
   display: flex;
   justify-content: space-between;

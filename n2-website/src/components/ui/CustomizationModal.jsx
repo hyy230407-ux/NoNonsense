@@ -27,9 +27,9 @@ const CustomizationModal = () => {
   });
 
   const sauceData = [
-    { id: 'pepper', name: 'Black Pepper', icon: '/images/black_pepper_sauce.png', color: '#555' },
-    { id: 'butter', name: 'Butter Chicken', icon: '/images/butter_chicken.png', color: '#ffb347' },
-    { id: 'ranch', name: 'Creamy Ranch', icon: '🍶', color: '#f8f9fa' }
+    { id: 'pepper', name: 'Black Pepper', icon: '/images/black_pepper_sauce_cup.png', chickenIcon: '/images/black_pepper_chicken_flavor.png', color: '#555' },
+    { id: 'butter', name: 'Butter Chicken', icon: '/images/butter_chicken_sauce_cup.png', chickenIcon: '/images/butter_chicken_chicken_flavor.png', color: '#ffb347' },
+    { id: 'ranch', name: 'Creamy Ranch', icon: '/images/creamy_ranch_sauce_cup.png', chickenIcon: '/images/grilled_chicken_serving.png', color: '#f8f9fa' }
   ];
 
   const getDefaultSauce = () => {
@@ -173,7 +173,6 @@ const CustomizationModal = () => {
               </div>
             </div>
 
-
             {/* Global Quantity */}
             <section className="modal-section">
               <h3 className="section-label">QUANTITY</h3>
@@ -222,11 +221,73 @@ const CustomizationModal = () => {
                     onClick={() => setSelectedBaseSauce(sauce.id)}
                   >
                     <div className="sauce-icon">
-                      {sauce.id === 'ranch' ? sauce.icon : <img src={sauce.icon} alt={sauce.name} />}
+                      <img src={sauce.icon} alt={sauce.name} />
                     </div>
                     <span className="sauce-name">{sauce.name}</span>
                   </div>
                 ))}
+              </div>
+            </section>
+
+            {/* Extra Chicken Section (Moved between Base Sauce and Extra Sauces) */}
+            <section className="modal-section chicken-promotion-section">
+              <h3 className="section-label">ADD EXTRA CHICKEN</h3>
+              <div className={`addon-modern-item flavor-accordion ${isExtraChickenOpen ? 'expanded' : ''}`}>
+                <div className="accordion-header" onClick={() => setIsExtraChickenOpen(!isExtraChickenOpen)}>
+                  <div className="addon-icon-box">
+                    <img src="/images/grilled_chicken_serving.png" alt="Grilled Chicken" className="section-featured-img" />
+                  </div>
+                  <div className="addon-details">
+                    <span className="addon-title">Extra Grilled Chicken</span>
+                    <span className="addon-info">+80g premium grilled chicken</span>
+                  </div>
+                  <div className="addon-right">
+                    <span className="addon-cost">+$1.90</span>
+                    {isExtraChickenOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                  </div>
+                </div>
+
+                {isExtraChickenOpen && (
+                  <div className="accordion-content">
+                    <div className="flavor-selection-label">CHOOSE FLAVOUR</div>
+                    <div className="flavor-list">
+                      {sauceData.filter(s => s.id !== 'ranch').map(flavor => (
+                        <div key={flavor.id} className="flavor-item">
+                          <div className="flavor-left">
+                            <div className="flavor-img">
+                              <img src={flavor.chickenIcon} alt={flavor.name} />
+                            </div>
+                            <div className="flavor-info">
+                              <div className="flavor-name">{flavor.name}</div>
+                              <div className="flavor-meta" style={{ color: flavor.color }}>
+                                +$1.90 · 80g serving
+                              </div>
+                            </div>
+                          </div>
+                          <div className="flavor-right">
+                            <div className="flavor-qty-controls">
+                              <button 
+                                className="flavor-qty-btn minus"
+                                onClick={() => updateFlavor(flavor.id, -1)}
+                                disabled={extraChickenFlavors[flavor.id] === 0}
+                              >
+                                <Minus size={14} />
+                              </button>
+                              <span className="flavor-qty-val">{extraChickenFlavors[flavor.id]}</span>
+                              <button 
+                                className="flavor-qty-btn plus"
+                                style={{ backgroundColor: flavor.color }}
+                                onClick={() => updateFlavor(flavor.id, 1)}
+                              >
+                                <Plus size={14} />
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             </section>
 
@@ -238,7 +299,7 @@ const CustomizationModal = () => {
                   <div key={sauce.id} className={`extra-sauce-item ${extraSauces[sauce.id] > 0 ? 'active' : ''}`}>
                     <div className="extra-sauce-left">
                       <div className="extra-sauce-icon-box">
-                        {sauce.id === 'ranch' ? sauce.icon : <img src={sauce.icon} alt={sauce.name} />}
+                        <img src={sauce.icon} alt={sauce.name} />
                       </div>
                       <div className="extra-sauce-details">
                         <span className="extra-sauce-title">{sauce.name} Sauce</span>
@@ -262,62 +323,6 @@ const CustomizationModal = () => {
             <section className="modal-section">
               <h3 className="section-label">OTHER ADD-ONS</h3>
               <div className="addon-modern-list">
-                {/* Extra Chicken Accordion */}
-                <div className={`addon-modern-item flavor-accordion ${isExtraChickenOpen ? 'expanded' : ''}`}>
-                  <div className="accordion-header" onClick={() => setIsExtraChickenOpen(!isExtraChickenOpen)}>
-                    <div className="addon-icon-box">🍗</div>
-                    <div className="addon-details">
-                      <span className="addon-title">Extra Chicken</span>
-                      <span className="addon-info">+80g grilled chicken</span>
-                    </div>
-                    <div className="addon-right">
-                      <span className="addon-cost">+$1.90</span>
-                      {isExtraChickenOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
-                    </div>
-                  </div>
-
-                  {isExtraChickenOpen && (
-                    <div className="accordion-content">
-                      <div className="flavor-selection-label">CHOOSE FLAVOUR</div>
-                      <div className="flavor-list">
-                        {sauceData.filter(s => s.id !== 'ranch').map(flavor => (
-                          <div key={flavor.id} className="flavor-item">
-                            <div className="flavor-left">
-                              <div className="flavor-img">
-                                <img src={flavor.icon} alt={flavor.name} />
-                              </div>
-                              <div className="flavor-info">
-                                <div className="flavor-name">{flavor.name}</div>
-                                <div className="flavor-meta" style={{ color: flavor.color }}>
-                                  +$1.90 · 80g serving
-                                </div>
-                              </div>
-                            </div>
-                            <div className="flavor-right">
-                              <div className="flavor-qty-controls">
-                                <button 
-                                  className="flavor-qty-btn minus"
-                                  onClick={() => updateFlavor(flavor.id, -1)}
-                                  disabled={extraChickenFlavors[flavor.id] === 0}
-                                >
-                                  <Minus size={14} />
-                                </button>
-                                <span className="flavor-qty-val">{extraChickenFlavors[flavor.id]}</span>
-                                <button 
-                                  className="flavor-qty-btn plus"
-                                  style={{ backgroundColor: flavor.color }}
-                                  onClick={() => updateFlavor(flavor.id, 1)}
-                                >
-                                  <Plus size={14} />
-                                </button>
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-                </div>
 
 
                 <div className={`addon-modern-item ${addons.softBoiledEgg > 0 ? 'active' : ''}`}>

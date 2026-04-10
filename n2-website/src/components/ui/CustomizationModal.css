@@ -127,19 +127,87 @@
   align-items: center;
 }
 
-.alert-text {
-  display: flex;
-  flex-direction: column;
-}
-
-.alert-text strong {
-  color: #00f2ff;
-  font-size: 0.95rem;
-}
-
 .alert-text span {
   color: #888;
   font-size: 0.85rem;
+}
+
+/* Pre-order Calendar Styles */
+.preorder-calendar-section {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 24px;
+  padding: 24px;
+}
+
+.calendar-mini-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  margin: 16px 0;
+}
+
+.calendar-day {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 4px;
+  border-radius: 12px;
+  background: #1a1a1c;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  gap: 4px;
+}
+
+.calendar-day.open {
+  border-color: #00f2ff;
+  background: rgba(0, 242, 255, 0.05);
+  box-shadow: 0 0 10px rgba(0, 242, 255, 0.1);
+}
+
+.calendar-day.closed {
+  opacity: 0.3;
+}
+
+.day-name {
+  font-size: 0.65rem;
+  font-weight: 800;
+  color: #666;
+  text-transform: uppercase;
+}
+
+.calendar-day.open .day-name {
+  color: #00f2ff;
+}
+
+.day-date {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #fff;
+}
+
+.day-status {
+  font-size: 0.55rem;
+  font-weight: 800;
+  padding: 2px 4px;
+  border-radius: 4px;
+  background: #333;
+  color: #888;
+}
+
+.calendar-day.open .day-status {
+  background: #00f2ff;
+  color: #000;
+}
+
+.calendar-note {
+  font-size: 0.8rem;
+  color: #888;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.calendar-note strong {
+  color: #00f2ff;
 }
 
 /* Macros Grid */
@@ -384,16 +452,27 @@
   margin-top: 1px;
 }
 
-.extra-sauce-right {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
 .extra-sauce-cost {
   color: #00f2ff;
   font-weight: 700;
   font-size: 0.9rem;
+}
+
+/* Featured Section Image */
+.section-featured-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.chicken-promotion-section .addon-modern-item {
+  border-color: rgba(255, 183, 0, 0.15);
+  background: rgba(255, 183, 0, 0.02);
+}
+
+.chicken-promotion-section .expanded {
+  border-color: rgba(255, 183, 0, 0.3);
 }
 
 /* Add-on List */
