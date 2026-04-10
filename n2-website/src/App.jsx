@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import Menu from './pages/Menu';
 import About from './pages/About';
 import Track from './pages/Track';
+import GrabGo from './pages/GrabGo';
 import { CartProvider } from './context/CartContext';
 import CartModal from './components/ui/CartModal';
 import CustomizationModal from './components/ui/CustomizationModal';
@@ -21,6 +22,8 @@ function App() {
             <Routes>
               <Route path="/" element={<Menu />} />
               <Route path="/home" element={<Home />} />
+              <Route path="/menu" element={<Menu />} />
+              <Route path="/grab-go" element={<GrabGo />} />
               <Route path="/about" element={<About />} />
               <Route path="/track" element={<Track />} />
             </Routes>

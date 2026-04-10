@@ -20,7 +20,8 @@ const Navbar = () => {
         
         <div className="navbar-links">
           <Link to="/" className={location.pathname === '/' ? 'active' : ''}>Menu</Link>
-          <Link to="/home" className={location.pathname === '/home' ? 'active' : ''}>Home</Link>
+          <Link to="/grab-go" className={location.pathname === '/grab-go' ? 'active' : ''}>Grab & Go</Link>
+          <Link to="/home" className={location.pathname === '/home' ? 'active' : ''}>Welcome</Link>
           <Link to="/about" className={location.pathname === '/about' ? 'active' : ''}>About</Link>
           <Link to="/track" className={location.pathname === '/track' ? 'active' : ''}>Track</Link>
         </div>

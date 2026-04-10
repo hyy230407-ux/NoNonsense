@@ -55,6 +55,57 @@ function doPost(e) {
     
     sheet.appendRow([timestamp, name, email, phone, items, customizations, totalPrice]);
 
+    // --- EMAIL CONFIRMATION SYSTEM ---
+    if (email !== "N/A") {
+      try {
+        var subject = "Order Confirmation - N2 High Protein Global Flavours";
+        var body = "Hi " + name + ",\n\n" +
+                   "Thank you for your order with N2! We've received your details and are preparing your high-protein meal.\n\n" +
+                   "--- ORDER SUMMARY ---\n" +
+                   items + "\n\n" +
+                   "--- CUSTOMIZATIONS ---\n" +
+                   customizations + "\n\n" +
+                   "Total Price: $" + totalPrice + "\n\n" +
+                   "--- COLLECTION DETAILS ---\n" +
+                   "Date: Tomorrow (Next-day collection)\n" +
+                   "Time: 11:00 AM – 3:00 PM\n" +
+                   "Location: N2 Kiosk, NYP North Canteen\n\n" +
+                   "If you haven't already, please ensure you've sent your payment screenshot to +65 8585 2055 via WhatsApp.\n\n" +
+                   "Eat clean, stay lean!\n" +
+                   "The N2 Team";
+                   
+        var htmlBody = "<div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee; border-radius: 10px;'>" +
+                       "<h2 style='color: #00f1d9; border-bottom: 2px solid #00f1d9; padding-bottom: 10px;'>Order Received! 🍗</h2>" +
+                       "<p>Hi <strong>" + name + "</strong>,</p>" +
+                       "<p>Thank you for choosing <strong>N2</strong>. Your body will thank you for this clean fuel!</p>" +
+                       "<div style='background: #f9f9f9; padding: 15px; border-radius: 8px; margin: 20px 0;'>" +
+                       "<h3>Order Summary</h3>" +
+                       "<pre style='white-space: pre-wrap; font-family: inherit;'>" + items + "</pre>" +
+                       "<h4>Customizations:</h4>" +
+                       "<p style='font-size: 0.9em; color: #666;'>" + customizations.replace(/\n/g, '<br>') + "</p>" +
+                       "<p style='font-size: 1.2em;'><strong>Total: $" + totalPrice + "</strong></p>" +
+                       "</div>" +
+                       "<div style='border-left: 4px solid #00f1d9; padding-left: 15px; margin: 20px 0;'>" +
+                       "<h4>Collection Info</h4>" +
+                       "<p><strong>When:</strong> Tomorrow (11 AM – 3 PM)<br>" +
+                       "<strong>Where:</strong> N2 Kiosk, NYP North Canteen</p>" +
+                       "</div>" +
+                       "<p style='font-size: 0.9em; color: #888;'>Reminder: Please WhatsApp your payment screenshot to <strong>+65 8585 2055</strong> if you haven't done so.</p>" +
+                       "<hr style='border: 0; border-top: 1px solid #eee; margin: 20px 0;'>" +
+                       "<p style='text-align: center; color: #aaa; font-size: 0.8em;'>N2 - High Protein · Global Flavours · NYP North Canteen</p>" +
+                       "</div>";
+
+        MailApp.sendEmail({
+          to: email,
+          subject: subject,
+          body: body,
+          htmlBody: htmlBody
+        });
+      } catch (e) {
+        Logger.log("Email failed: " + e.toString());
+      }
+    }
+    // ---------------------------------
     
     return ContentService.createTextOutput(JSON.stringify({ "result": "success" }))
       .setMimeType(ContentService.MimeType.MIME_JSON);

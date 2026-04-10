@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Calendar, Minus, Plus, ShoppingBag } from 'lucide-react';
+import { X, Calendar, Minus, Plus, ShoppingBag, ChevronDown, ChevronUp } from 'lucide-react';
 import Button from './Button';
 import { useCart } from '../../context/CartContext';
 import './CustomizationModal.css';
@@ -17,29 +17,64 @@ const CustomizationModal = () => {
   const [totalQuantity, setTotalQuantity] = useState(1);
   const [riceSize, setRiceSize] = useState('200g');
   const [addons, setAddons] = useState({
-    extraChicken: 0,
-    butterChickenSauce: 0,
     softBoiledEgg: 0,
     extraRice: 0
   });
+
+  const [extraChickenFlavors, setExtraChickenFlavors] = useState({
+    butter: 0,
+    pepper: 0
+  });
+
+  const sauceData = [
+    { id: 'pepper', name: 'Black Pepper', icon: '/images/black_pepper_sauce.png', color: '#555' },
+    { id: 'butter', name: 'Butter Chicken', icon: '/images/butter_chicken.png', color: '#ffb347' },
+    { id: 'ranch', name: 'Creamy Ranch', icon: '🍶', color: '#f8f9fa' }
+  ];
+
+  const getDefaultSauce = () => {
+    if (!meal) return 'ranch';
+    const title = meal.title.toLowerCase();
+    if (title.includes('butter')) return 'butter';
+    if (title.includes('pepper')) return 'pepper';
+    return 'ranch';
+  };
+
+  const [selectedBaseSauce, setSelectedBaseSauce] = useState(getDefaultSauce());
+  const [extraSauces, setExtraSauces] = useState({
+    butter: 0,
+    pepper: 0,
+    ranch: 0
+  });
+
+  const [isExtraChickenOpen, setIsExtraChickenOpen] = useState(true);
 
   if (!meal) return null;
 
   const addonPrices = {
     extraChicken: 1.90,
-    butterChickenSauce: 1.00,
+    sauce: 1.00,
     softBoiledEgg: 0.80,
     extraRice: 1.00
   };
 
   const getBasePrice = () => parseFloat(meal.price.replace('$', ''));
-  
+
   const calculateTotal = () => {
     let total = getBasePrice();
-    total += addons.extraChicken * addonPrices.extraChicken;
-    total += addons.butterChickenSauce * addonPrices.butterChickenSauce;
+    
+    // Addons
     total += addons.softBoiledEgg * addonPrices.softBoiledEgg;
     total += addons.extraRice * addonPrices.extraRice;
+    
+    // Extra Sauces
+    const totalExtraSauces = Object.values(extraSauces).reduce((a, b) => a + b, 0);
+    total += totalExtraSauces * addonPrices.sauce;
+    
+    // Flavors
+    const totalExtraChickens = Object.values(extraChickenFlavors).reduce((a, b) => a + b, 0);
+    total += totalExtraChickens * addonPrices.extraChicken;
+    
     return (total * totalQuantity).toFixed(2);
   };
 
@@ -50,18 +85,45 @@ const CustomizationModal = () => {
     }));
   };
 
+  const updateFlavor = (id, delta) => {
+    setExtraChickenFlavors(prev => ({
+      ...prev,
+      [id]: Math.max(0, prev[id] + delta)
+    }));
+  };
+
+  const updateExtraSauce = (id, delta) => {
+    setExtraSauces(prev => ({
+      ...prev,
+      [id]: Math.max(0, prev[id] + delta)
+    }));
+  };
+
   const handleAddToCart = () => {
-    const selectedAddons = Object.entries(addons)
-      .filter(([_, qty]) => qty > 0)
-      .map(([key, qty]) => {
-        const labels = {
-          extraChicken: 'Extra Chicken',
-          butterChickenSauce: 'Butter Chicken Sauce',
-          softBoiledEgg: 'Soft Boiled Egg',
-          extraRice: 'Extra Rice'
-        };
-        return `${labels[key]} (x${qty})`;
-      });
+    const selectedAddons = [
+      `Base Sauce: ${sauceData.find(s => s.id === selectedBaseSauce).name}`,
+      ...Object.entries(addons)
+        .filter(([_, qty]) => qty > 0)
+        .map(([key, qty]) => {
+          const labels = {
+            softBoiledEgg: 'Soft Boiled Egg',
+            extraRice: 'Extra Rice'
+          };
+          return `${labels[key]} (x${qty})`;
+        }),
+      ...Object.entries(extraSauces)
+        .filter(([_, qty]) => qty > 0)
+        .map(([id, qty]) => {
+          const sauce = sauceData.find(s => s.id === id);
+          return `Extra ${sauce.name} Sauce (x${qty})`;
+        }),
+      ...Object.entries(extraChickenFlavors)
+        .filter(([_, qty]) => qty > 0)
+        .map(([id, qty]) => {
+          const flavor = sauceData.find(f => f.id === id);
+          return `Extra ${flavor.name} (x${qty})`;
+        })
+    ];
 
     const customizedItem = {
       ...meal,
@@ -182,41 +244,114 @@ const CustomizationModal = () => {
               </section>
             )}
 
+            {/* Base Sauce Section */}
+            <section className="modal-section">
+              <h3 className="section-label">CHOOSE BASE SAUCE</h3>
+              <div className="sauce-cards">
+                {sauceData.map(sauce => (
+                  <div 
+                    key={sauce.id}
+                    className={`sauce-card ${selectedBaseSauce === sauce.id ? 'active' : ''}`}
+                    onClick={() => setSelectedBaseSauce(sauce.id)}
+                  >
+                    <div className="sauce-icon">
+                      {sauce.id === 'ranch' ? sauce.icon : <img src={sauce.icon} alt={sauce.name} />}
+                    </div>
+                    <span className="sauce-name">{sauce.name}</span>
+                  </div>
+                ))}
+              </div>
+            </section>
+
+            {/* Extra Sauces Section */}
+            <section className="modal-section">
+              <h3 className="section-label">EXTRA SAUCES</h3>
+              <div className="extra-sauce-list">
+                {sauceData.map(sauce => (
+                  <div key={sauce.id} className={`extra-sauce-item ${extraSauces[sauce.id] > 0 ? 'active' : ''}`}>
+                    <div className="extra-sauce-left">
+                      <div className="extra-sauce-icon-box">
+                        {sauce.id === 'ranch' ? sauce.icon : <img src={sauce.icon} alt={sauce.name} />}
+                      </div>
+                      <div className="extra-sauce-details">
+                        <span className="extra-sauce-title">{sauce.name} Sauce</span>
+                        <span className="extra-sauce-info">Extra serving · in-house recipe</span>
+                      </div>
+                    </div>
+                    <div className="extra-sauce-right">
+                      <span className="extra-sauce-cost">+$1.00</span>
+                      <div className="addon-qty-controls">
+                        <button onClick={() => updateExtraSauce(sauce.id, -1)}><Minus size={16} /></button>
+                        <span>{extraSauces[sauce.id]}</span>
+                        <button className="plus-btn" onClick={() => updateExtraSauce(sauce.id, 1)}><Plus size={16} /></button>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </section>
+
             {/* Add-ons Section */}
             <section className="modal-section">
-              <h3 className="section-label">ADD-ONS</h3>
+              <h3 className="section-label">OTHER ADD-ONS</h3>
               <div className="addon-modern-list">
-                <div className={`addon-modern-item ${addons.extraChicken > 0 ? 'active' : ''}`}>
-                  <div className="addon-icon-box">🍗</div>
-                  <div className="addon-details">
-                    <span className="addon-title">Extra Chicken</span>
-                    <span className="addon-info">+100g grilled · (~25g protein)</span>
-                  </div>
-                  <div className="addon-right">
-                    <span className="addon-cost">+$1.90</span>
-                    <div className="addon-qty-controls">
-                      <button onClick={() => updateAddon('extraChicken', -1)}><Minus size={16} /></button>
-                      <span>{addons.extraChicken}</span>
-                      <button className="plus-btn" onClick={() => updateAddon('extraChicken', 1)}><Plus size={16} /></button>
+                {/* Extra Chicken Accordion */}
+                <div className={`addon-modern-item flavor-accordion ${isExtraChickenOpen ? 'expanded' : ''}`}>
+                  <div className="accordion-header" onClick={() => setIsExtraChickenOpen(!isExtraChickenOpen)}>
+                    <div className="addon-icon-box">🍗</div>
+                    <div className="addon-details">
+                      <span className="addon-title">Extra Chicken</span>
+                      <span className="addon-info">+80g grilled · (~20g protein)</span>
+                    </div>
+                    <div className="addon-right">
+                      <span className="addon-cost">+$1.90</span>
+                      {isExtraChickenOpen ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
                     </div>
                   </div>
+
+                  {isExtraChickenOpen && (
+                    <div className="accordion-content">
+                      <div className="flavor-selection-label">CHOOSE FLAVOUR</div>
+                      <div className="flavor-list">
+                        {sauceData.filter(s => s.id !== 'ranch').map(flavor => (
+                          <div key={flavor.id} className="flavor-item">
+                            <div className="flavor-left">
+                              <div className="flavor-img">
+                                <img src={flavor.icon} alt={flavor.name} />
+                              </div>
+                              <div className="flavor-info">
+                                <div className="flavor-name">{flavor.name}</div>
+                                <div className="flavor-meta" style={{ color: flavor.color }}>
+                                  +$1.90 · 80g (~20g protein)
+                                </div>
+                              </div>
+                            </div>
+                            <div className="flavor-right">
+                              <div className="flavor-qty-controls">
+                                <button 
+                                  className="flavor-qty-btn minus"
+                                  onClick={() => updateFlavor(flavor.id, -1)}
+                                  disabled={extraChickenFlavors[flavor.id] === 0}
+                                >
+                                  <Minus size={14} />
+                                </button>
+                                <span className="flavor-qty-val">{extraChickenFlavors[flavor.id]}</span>
+                                <button 
+                                  className="flavor-qty-btn plus"
+                                  style={{ backgroundColor: flavor.color }}
+                                  onClick={() => updateFlavor(flavor.id, 1)}
+                                >
+                                  <Plus size={14} />
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
 
-                <div className={`addon-modern-item ${addons.butterChickenSauce > 0 ? 'active' : ''}`}>
-                  <div className="addon-icon-box">🍛</div>
-                  <div className="addon-details">
-                    <span className="addon-title">Butter Chicken Sauce</span>
-                    <span className="addon-info">In-house recipe · cashew nut paste · real spices</span>
-                  </div>
-                  <div className="addon-right">
-                    <span className="addon-cost">+$1.00</span>
-                    <div className="addon-qty-controls">
-                      <button onClick={() => updateAddon('butterChickenSauce', -1)}><Minus size={16} /></button>
-                      <span>{addons.butterChickenSauce}</span>
-                      <button className="plus-btn" onClick={() => updateAddon('butterChickenSauce', 1)}><Plus size={16} /></button>
-                    </div>
-                  </div>
-                </div>
 
                 <div className={`addon-modern-item ${addons.softBoiledEgg > 0 ? 'active' : ''}`}>
                   <div className="addon-icon-box">🥚</div>
