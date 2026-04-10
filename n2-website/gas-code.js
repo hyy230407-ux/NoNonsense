@@ -18,7 +18,7 @@ function doPost(e) {
   
   // Set up header row if the sheet is empty
   if (sheet.getLastRow() === 0) {
-    sheet.appendRow(['Timestamp', 'Name', 'Email', 'Phone', 'Order Items', 'Customizations', 'Total Price']);
+    sheet.appendRow(['Timestamp', 'Name', 'Email', 'Phone', 'Order Items', 'Base Sauces', 'Add-ons', 'Total Price']);
   }
   
   try {
@@ -38,22 +38,31 @@ function doPost(e) {
       return item.title + " (x" + (item.quantity || 1) + ")";
     }).join("\n");
 
-    var customizations = (data.items || []).map(function(item) {
-      var details = "";
-      if (item.customizations) {
-        var parts = [];
-        if (item.customizations.riceSize) parts.push(item.customizations.riceSize);
-        if (item.customizations.addons && item.customizations.addons.length > 0) {
-          parts.push(item.customizations.addons.join(", "));
-        }
-        details = parts.join(" | ");
+    var baseSauces = (data.items || []).map(function(item) {
+      if (!item.customizations || !item.customizations.addons) return "N/A";
+      var sauce = item.customizations.addons.find(function(a) { return a.indexOf("Base Sauce:") !== -1; });
+      return item.title + ": " + (sauce ? sauce.replace("Base Sauce: ", "") : "Standard");
+    }).join("\n");
+
+    var addons = (data.items || []).map(function(item) {
+      if (!item.customizations) return "None";
+      var parts = [];
+      if (item.customizations.riceSize) parts.push("Rice: " + item.customizations.riceSize);
+      
+      var otherAddons = (item.customizations.addons || []).filter(function(a) { 
+        return a.indexOf("Base Sauce:") === -1; 
+      });
+      
+      if (otherAddons.length > 0) {
+        parts.push(otherAddons.join(", "));
       }
-      return item.title + ": " + (details || "Standard");
+      
+      return item.title + ": " + (parts.join(" | ") || "Standard");
     }).join("\n");
 
     var totalPrice = data.totalPrice || "0";
     
-    sheet.appendRow([timestamp, name, email, phone, items, customizations, totalPrice]);
+    sheet.appendRow([timestamp, name, email, phone, items, baseSauces, addons, totalPrice]);
 
     // --- EMAIL CONFIRMATION SYSTEM ---
     if (email !== "N/A") {
@@ -63,8 +72,10 @@ function doPost(e) {
                    "Thank you for your order with N2! We've received your details and are preparing your high-protein meal.\n\n" +
                    "--- ORDER SUMMARY ---\n" +
                    items + "\n\n" +
-                   "--- CUSTOMIZATIONS ---\n" +
-                   customizations + "\n\n" +
+                   "--- BASE SAUCES ---\n" +
+                   baseSauces + "\n\n" +
+                   "--- OTHER ADD-ONS ---\n" +
+                   addons + "\n\n" +
                    "Total Price: $" + totalPrice + "\n\n" +
                    "--- COLLECTION DETAILS ---\n" +
                    "Date: Tomorrow (Next-day collection)\n" +
@@ -79,11 +90,13 @@ function doPost(e) {
                        "<p>Hi <strong>" + name + "</strong>,</p>" +
                        "<p>Thank you for choosing <strong>N2</strong>. Your body will thank you for this clean fuel!</p>" +
                        "<div style='background: #f9f9f9; padding: 15px; border-radius: 8px; margin: 20px 0;'>" +
-                       "<h3>Order Summary</h3>" +
-                       "<pre style='white-space: pre-wrap; font-family: inherit;'>" + items + "</pre>" +
-                       "<h4>Customizations:</h4>" +
-                       "<p style='font-size: 0.9em; color: #666;'>" + customizations.replace(/\n/g, '<br>') + "</p>" +
-                       "<p style='font-size: 1.2em;'><strong>Total: $" + totalPrice + "</strong></p>" +
+                        "<h3>Order Summary</h3>" +
+                        "<pre style='white-space: pre-wrap; font-family: inherit;'>" + items + "</pre>" +
+                        "<h4>Base Sauces:</h4>" +
+                        "<p style='font-size: 0.9em; color: #666;'>" + baseSauces.replace(/\n/g, '<br>') + "</p>" +
+                        "<h4>Other Add-ons:</h4>" +
+                        "<p style='font-size: 0.9em; color: #666;'>" + addons.replace(/\n/g, '<br>') + "</p>" +
+                        "<p style='font-size: 1.2em;'><strong>Total: $" + totalPrice + "</strong></p>" +
                        "</div>" +
                        "<div style='border-left: 4px solid #00f1d9; padding-left: 15px; margin: 20px 0;'>" +
                        "<h4>Collection Info</h4>" +

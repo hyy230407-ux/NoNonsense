@@ -260,6 +260,32 @@
   display: block;
 }
 
+.payment-warning-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background: rgba(255, 179, 71, 0.1);
+  border: 1px solid rgba(255, 179, 71, 0.3);
+  padding: 16px;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  text-align: left;
+}
+
+.warning-text {
+  font-size: 0.9rem;
+  line-height: 1.4;
+  color: var(--text-primary);
+}
+
+.warning-text strong {
+  color: #ffb347; /* accent-orange color */
+}
+
+.text-orange {
+  color: #ffb347;
+}
+
 .whatsapp-box {
   background: rgba(37, 211, 102, 0.05);
   border: 1px solid rgba(37, 211, 102, 0.2);

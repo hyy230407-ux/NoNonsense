@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, ShoppingBag, Trash2, Plus, Minus, Send, CheckCircle2 } from 'lucide-react';
+import { X, ShoppingBag, Trash2, Plus, Minus, Send, CheckCircle2, AlertTriangle } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 import Button from './Button';
 import './CartModal.css';
@@ -165,6 +165,13 @@ const CartModal = () => {
                 <div className="qr-container">
                   <img src="/images/paynow_qr.png" alt="PayNow QR Code" className="payment-qr" />
                 </div>
+                
+                <div className="payment-warning-box">
+                  <AlertTriangle size={20} className="text-orange" />
+                  <div className="warning-text">
+                    <strong>IMPORTANT:</strong> You must enter your personal details in the <strong>next step</strong> after payment to confirm your order.
+                  </div>
+                </div>
                 <div className="whatsapp-box">
                   <p>After payment, please send a screenshot to:</p>
                   <a 
@@ -273,7 +280,7 @@ const CartModal = () => {
                   variant="primary" 
                   onClick={() => setStep('checkout')}
                 >
-                  Next: My Details
+                  Proceed: My Details
                 </Button>
               </div>
             ) : (
