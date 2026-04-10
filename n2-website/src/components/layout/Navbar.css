@@ -28,35 +28,18 @@
   gap: 12px;
 }
 
-.logo-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 800;
-  font-size: 16px;
+.logo-img {
+  height: 50px;
+  width: auto;
+  filter: drop-shadow(0 0 12px rgba(0, 241, 217, 0.4));
+  transition: transform var(--transition-fast);
 }
 
-.logo-text {
-  display: flex;
-  flex-direction: column;
+.logo-img:hover {
+  transform: scale(1.05);
 }
 
-.logo-title {
-  font-size: 12px;
-  font-weight: 800;
-  letter-spacing: 0.1em;
-  margin-bottom: 2px;
-}
 
-.logo-subtitle {
-  font-size: 10px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-}
 
 .navbar-links {
   display: flex;

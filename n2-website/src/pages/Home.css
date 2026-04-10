@@ -21,43 +21,11 @@
   margin-bottom: 40px;
 }
 
-.badge-logo {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 800;
-  font-size: 16px;
-}
-
-.badge-text-group {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  background: rgba(255, 255, 255, 0.03);
-  padding: 8px 16px;
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.badge-title {
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.1em;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.badge-subtitle {
-  font-size: 11px;
-}
-
-.inline-icon {
-  margin-bottom: 2px;
+.hero-logo-img {
+  height: 120px;
+  width: auto;
+  filter: drop-shadow(0 0 20px rgba(0, 241, 217, 0.5));
+  margin-bottom: 24px;
 }
 
 .hero-headline {

@@ -5,9 +5,9 @@ const Footer = () => {
   return (
     <footer className="footer">
       <div className="footer-content">
-        <div className="logo-icon footer-logo">N2</div>
-        <div className="footer-title text-cyan">HIGH PROTEIN GLOBAL FLAVOURS</div>
-        <div className="footer-subtitle text-gray">Real Food. Real Flavour. Real Fuel.</div>
+        <Link to="/" className="footer-logo">
+          <img src="/images/logo.png" alt="N2 Logo" className="logo-img-footer" />
+        </Link>
         
         <div className="footer-links">
           <Link to="/">Home</Link>

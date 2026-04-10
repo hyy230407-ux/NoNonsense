@@ -11,11 +11,7 @@ const Navbar = () => {
     <nav className="navbar">
       <div className="navbar-container">
         <Link to="/" className="navbar-logo">
-          <div className="logo-icon">N2</div>
-          <div className="logo-text">
-            <span className="logo-title text-cyan">HIGH PROTEIN</span>
-            <span className="logo-subtitle text-gray">GLOBAL FLAVOURS</span>
-          </div>
+          <img src="/images/logo.png" alt="N2 Logo" className="logo-img" />
         </Link>
         
         <div className="navbar-links">

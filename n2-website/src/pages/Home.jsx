@@ -25,13 +25,7 @@ const Home = () => {
       <section className="hero-section container">
         <div className="hero-content">
           <div className="hero-badges">
-            <div className="badge-logo text-cyan">N2</div>
-            <div className="badge-text-group">
-              <span className="badge-title text-cyan"><Zap size={12} className="inline-icon"/> HIGH PROTEIN - GLOBAL FLAVOURS</span>
-              <span className="badge-subtitle text-gray">
-                🥦 Save time, skip the queue, and satisfy your taste buds with NYP's healthiest, most flavourful and satisfying meal.
-              </span>
-            </div>
+            <img src="/images/logo.png" alt="N2 Logo" className="hero-logo-img" />
           </div>
           
           <h1 className="hero-headline">
