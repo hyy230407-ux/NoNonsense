@@ -65,7 +65,7 @@ const CustomizationModal = () => {
     ];
   };
 
-  const [selectedDay, setSelectedDay] = useState(null);
+  const [selectedDay, setSelectedDay] = useState('wed');
   const [isExtraChickenOpen, setIsExtraChickenOpen] = useState(true);
   const [error, setError] = useState(null);
 

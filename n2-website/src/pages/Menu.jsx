@@ -178,7 +178,7 @@ const Menu = () => {
 
           <div className="menu-grid">
             {snacks.map(snack => (
-              <FoodCard key={snack.id} {...snack} isDisabled={true} />
+              <FoodCard key={snack.id} {...snack} />
             ))}
           </div>
         </section>

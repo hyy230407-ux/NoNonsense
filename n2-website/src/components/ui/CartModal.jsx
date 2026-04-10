@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, ShoppingBag, Trash2, Plus, Minus, Send, CheckCircle2, AlertTriangle } from 'lucide-react';
+import { X, ShoppingBag, Trash2, Plus, Minus, Send, CheckCircle2, AlertTriangle, Calendar } from 'lucide-react';
 import { useCart } from '../../context/CartContext';
 import Button from './Button';
 import './CartModal.css';
@@ -131,7 +131,9 @@ const CartModal = () => {
                         
                         {item.customizations && (
                           <div className="cart-item-customs">
-                            <span className="custom-tag rice-tag">{item.customizations.riceSize}</span>
+                            {item.customizations.riceSize && (
+                              <span className="custom-tag rice-tag">{item.customizations.riceSize}</span>
+                            )}
                             {item.customizations.collectionDay && (
                               <span className="custom-tag day-tag">
                                 <Calendar size={12} className="icon-mr-xs" />
