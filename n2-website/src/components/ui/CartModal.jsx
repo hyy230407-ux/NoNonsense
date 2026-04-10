@@ -45,7 +45,7 @@ const CartModal = () => {
     // 4. Click 'Deploy' > 'New Deployment' > 'Web App'.
     // 5. 'Execute as: Me' and 'Who has access: Anyone'.
     // 6. Copy the Deployment URL and paste it below:
-    const GAS_URL = 'https://script.google.com/macros/s/AKfycbxYtATpBN9h8CfmaZxo9xPNGsZSUGNFDTIvU0N3NDUWpfYd0rqSlOiHEhpbwVU_65OYdA/exec'; 
+    const GAS_URL = 'https://script.google.com/macros/s/AKfycbzyoc7RzRVxnhBrtRk654IOc2ySEz09IEgeKt6ubZs6JtbzFYIrOnmk9awBel6X_EQY/exec'; 
     // -------------------------------------------------------------------------
 
     const orderData = {
