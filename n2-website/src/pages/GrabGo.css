@@ -56,22 +56,6 @@
   transform: scale(1.05);
 }
 
-.protein-tag {
-  position: absolute;
-  top: 24px;
-  right: 24px;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(8px);
-  padding: 8px 16px;
-  border-radius: 100px;
-  font-size: 0.85rem;
-  font-weight: 800;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #fff;
-}
 
 .product-info {
   padding: 24px;

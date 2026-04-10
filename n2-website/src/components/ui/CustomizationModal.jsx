@@ -146,17 +146,6 @@ const CustomizationModal = () => {
   const options = { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' };
   const dateStr = nextDay.toLocaleDateString('en-US', options);
 
-  const macros = isSnack ? {
-    kcal: 165,
-    protein: '28g',
-    carbs: '1g',
-    fat: '4g'
-  } : {
-    kcal: 580,
-    protein: '42g',
-    carbs: '62g',
-    fat: '10g'
-  };
 
   return (
     <div className="modern-modal-overlay" onClick={onClose}>
@@ -184,28 +173,6 @@ const CustomizationModal = () => {
               </div>
             </div>
 
-            {/* Macros Section */}
-            <section className="modal-section">
-              <h3 className="section-label">MACROS · ×1 SERVING</h3>
-              <div className="macros-modern-grid">
-                <div className="macro-card">
-                  <span className="macro-num text-orange">{macros.kcal}</span>
-                  <span className="macro-unit">Calories</span>
-                </div>
-                <div className="macro-card border-left">
-                  <span className="macro-num text-green">{macros.protein}</span>
-                  <span className="macro-unit">Protein</span>
-                </div>
-                <div className="macro-card border-left">
-                  <span className="macro-num text-blue">{macros.carbs}</span>
-                  <span className="macro-unit">Carbs</span>
-                </div>
-                <div className="macro-card border-left">
-                  <span className="macro-num text-pink">{macros.fat}</span>
-                  <span className="macro-unit">Fat</span>
-                </div>
-              </div>
-            </section>
 
             {/* Global Quantity */}
             <section className="modal-section">
@@ -301,7 +268,7 @@ const CustomizationModal = () => {
                     <div className="addon-icon-box">🍗</div>
                     <div className="addon-details">
                       <span className="addon-title">Extra Chicken</span>
-                      <span className="addon-info">+80g grilled · (~20g protein)</span>
+                      <span className="addon-info">+80g grilled chicken</span>
                     </div>
                     <div className="addon-right">
                       <span className="addon-cost">+$1.90</span>
@@ -322,7 +289,7 @@ const CustomizationModal = () => {
                               <div className="flavor-info">
                                 <div className="flavor-name">{flavor.name}</div>
                                 <div className="flavor-meta" style={{ color: flavor.color }}>
-                                  +$1.90 · 80g (~20g protein)
+                                  +$1.90 · 80g serving
                                 </div>
                               </div>
                             </div>
@@ -357,7 +324,7 @@ const CustomizationModal = () => {
                   <div className="addon-icon-box">🥚</div>
                   <div className="addon-details">
                     <span className="addon-title">Soft Boiled Egg</span>
-                    <span className="addon-info">~6g protein · soft, jammy centre</span>
+                    <span className="addon-info">Soft, jammy centre</span>
                   </div>
                   <div className="addon-right">
                     <span className="addon-cost">+$0.80</span>

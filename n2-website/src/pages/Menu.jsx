@@ -160,12 +160,11 @@ const Menu = () => {
             <span className="section-badge text-cyan bg-cyan-alpha">From $3.30</span>
             <h2>Protein Snacks</h2>
             <p className="section-desc text-gray">
-              100g grilled chicken. ~25g of clean protein. No rice, no fillers — just pure grilled protein. Perfect post-gym, between classes or any time you need real fuel fast.
+              100g grilled chicken. Pure performance fuel. No rice, no fillers — just clean grilled protein. Perfect post-gym, between classes or any time you need real fuel fast.
             </p>
             
             <div className="section-features">
               <span className="highlight-box">100g grilled chicken</span>
-              <span className="highlight-box">~25g protein</span>
               <span className="highlight-box">Post-gym</span>
               <span className="highlight-box">Mid-day boost</span>
               <span className="highlight-box">In-house ranch base</span>

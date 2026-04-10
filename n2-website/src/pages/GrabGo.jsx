@@ -15,7 +15,6 @@ const GrabGo = () => {
       title: 'Jamaican Jerk',
       subtitle: 'FUEL BOX',
       image: '/images/jerk_chicken.png',
-      protein: '50G PROTEIN',
       color: 'var(--accent-cyan)'
     },
     {
@@ -23,7 +22,6 @@ const GrabGo = () => {
       title: 'Mexican Jalapeño',
       subtitle: 'FUEL BOX',
       image: '/images/mexican_chicken.png',
-      protein: '50G PROTEIN',
       color: 'var(--accent-orange)'
     }
   ];
@@ -60,10 +58,6 @@ const GrabGo = () => {
             <div key={meal.id} className="product-card">
               <div className="product-image-container">
                 <img src={meal.image} alt={meal.title} className="product-image" />
-                <div className="protein-tag">
-                  <Zap size={12} fill="currentColor" />
-                  {meal.protein}
-                </div>
               </div>
               <div className="product-info">
                 <div className="product-label">{meal.subtitle}</div>
