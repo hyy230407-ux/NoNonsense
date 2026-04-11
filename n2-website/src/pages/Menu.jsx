@@ -155,6 +155,7 @@ const Menu = () => {
           </div>
         </section>
 
+{/* 
         <section className="menu-section mt-80">
           <div className="section-header">
             <span className="section-badge text-cyan bg-cyan-alpha">From $3.30</span>
@@ -182,6 +183,7 @@ const Menu = () => {
             ))}
           </div>
         </section>
+*/}
       </div>
     </div>
   );
