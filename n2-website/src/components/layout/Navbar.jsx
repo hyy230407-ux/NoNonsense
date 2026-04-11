@@ -21,7 +21,6 @@ const Navbar = () => {
         
         <div className={`navbar-links ${isMenuOpen ? 'open' : ''}`}>
           <Link to="/" className={location.pathname === '/' ? 'active' : ''} onClick={closeMenu}>Menu</Link>
-          <Link to="/grab-go" className={location.pathname === '/grab-go' ? 'active' : ''} onClick={closeMenu}>Grab & Go</Link>
           <Link to="/home" className={location.pathname === '/home' ? 'active' : ''} onClick={closeMenu}>Welcome</Link>
           <Link to="/about" className={location.pathname === '/about' ? 'active' : ''} onClick={closeMenu}>About</Link>
           <Link to="/track" className={location.pathname === '/track' ? 'active' : ''} onClick={closeMenu}>Track</Link>

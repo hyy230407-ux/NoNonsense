@@ -28,6 +28,8 @@ const CustomizationModal = () => {
   ];
 
   const flavorData = [
+    { id: 'original', name: 'Original', icon: '/images/grilled_chicken_serving.png', color: '#888' },
+    { id: 'pepper', name: 'Black Pepper', icon: '/images/black_pepper_chicken_flavor.png', color: '#555' },
     { id: 'butter', name: 'Butter Chicken', icon: '/images/butter_chicken_chicken_flavor.png', color: '#ffb347' },
     { id: 'jalapeno', name: 'Jalapeno', icon: '/images/jalapeno_chicken.png', color: '#4ade80' },
     { id: 'nashville', name: 'Nashville Hot Honey', icon: '/images/nashville_chicken.png', color: '#ef4444' },
@@ -45,7 +47,7 @@ const CustomizationModal = () => {
 
   const [selectedBaseSauce, setSelectedBaseSauce] = useState(getDefaultSauce());
   const [extraChickenFlavors, setExtraChickenFlavors] = useState({
-    butter: 0, jalapeno: 0, nashville: 0, mediterranean: 0, jerk: 0
+    original: 0, pepper: 0, butter: 0, jalapeno: 0, nashville: 0, mediterranean: 0, jerk: 0
   });
   const [extraSauces, setExtraSauces] = useState({
     butter: 0, pepper: 0, ranch: 0
@@ -92,8 +94,12 @@ const CustomizationModal = () => {
     total += totalExtraSauces * addonPrices.sauce;
     
     // Flavors
-    const totalExtraChickens = Object.values(extraChickenFlavors).reduce((a, b) => a + b, 0);
-    total += totalExtraChickens * addonPrices.extraChicken;
+    Object.entries(extraChickenFlavors).forEach(([id, qty]) => {
+      if (qty > 0) {
+        const price = id === 'jerk' ? 2.30 : 1.90;
+        total += qty * price;
+      }
+    });
     
     return (total * totalQuantity).toFixed(2);
   };
@@ -285,7 +291,7 @@ const CustomizationModal = () => {
                   </div>
                   <div className="addon-details">
                     <span className="addon-title">Extra Grilled Chicken</span>
-                    <span className="addon-info">+80g premium grilled chicken</span>
+                    <span className="addon-info">+100g premium grilled chicken</span>
                   </div>
                   <div className="addon-right">
                     <span className="addon-cost">+$1.90</span>
@@ -306,7 +312,7 @@ const CustomizationModal = () => {
                             <div className="flavor-info">
                               <div className="flavor-name">{flavor.name}</div>
                               <div className="flavor-meta" style={{ color: flavor.color }}>
-                                +$1.90 · 80g serving
+                                +${flavor.id === 'jerk' ? '2.30' : '1.90'} · 100g serving
                               </div>
                             </div>
                           </div>
