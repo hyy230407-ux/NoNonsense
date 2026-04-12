@@ -18,7 +18,8 @@ const CustomizationModal = () => {
   const [riceSize, setRiceSize] = useState('200g');
   const [addons, setAddons] = useState({
     softBoiledEgg: 0,
-    extraRice: 0
+    extraRice: 0,
+    extraVegetables: 0
   });
 
   const sauceData = [
@@ -28,7 +29,6 @@ const CustomizationModal = () => {
   ];
 
   const flavorData = [
-    { id: 'original', name: 'Original', icon: '/images/grilled_chicken_serving.png', color: '#888' },
     { id: 'pepper', name: 'Black Pepper', icon: '/images/black_pepper_chicken_flavor.png', color: '#555' },
     { id: 'butter', name: 'Butter Chicken', icon: '/images/butter_chicken_chicken_flavor.png', color: '#ffb347' },
     { id: 'jalapeno', name: 'Jalapeno', icon: '/images/jalapeno_chicken.png', color: '#4ade80' },
@@ -47,7 +47,7 @@ const CustomizationModal = () => {
 
   const [selectedBaseSauce, setSelectedBaseSauce] = useState(getDefaultSauce());
   const [extraChickenFlavors, setExtraChickenFlavors] = useState({
-    original: 0, pepper: 0, butter: 0, jalapeno: 0, nashville: 0, mediterranean: 0, jerk: 0
+    pepper: 0, butter: 0, jalapeno: 0, nashville: 0, mediterranean: 0, jerk: 0
   });
   const [extraSauces, setExtraSauces] = useState({
     butter: 0, pepper: 0, ranch: 0
@@ -77,7 +77,8 @@ const CustomizationModal = () => {
     extraChicken: 1.90,
     sauce: 1.00,
     softBoiledEgg: 0.80,
-    extraRice: 1.00
+    extraRice: 1.00,
+    extraVegetables: 1.00
   };
 
   const getBasePrice = () => parseFloat(meal.price.replace('$', ''));
@@ -88,6 +89,7 @@ const CustomizationModal = () => {
     // Addons
     total += addons.softBoiledEgg * addonPrices.softBoiledEgg;
     total += addons.extraRice * addonPrices.extraRice;
+    total += addons.extraVegetables * addonPrices.extraVegetables;
     
     // Extra Sauces
     const totalExtraSauces = Object.values(extraSauces).reduce((a, b) => a + b, 0);
@@ -139,7 +141,8 @@ const CustomizationModal = () => {
         .map(([key, qty]) => {
           const labels = {
             softBoiledEgg: 'Soft Boiled Egg',
-            extraRice: 'Extra Rice'
+            extraRice: 'Extra Rice',
+            extraVegetables: 'Extra Vegetables'
           };
           return `${labels[key]} (x${qty})`;
         }),
@@ -405,6 +408,22 @@ const CustomizationModal = () => {
                       <button onClick={() => updateAddon('extraRice', -1)}><Minus size={16} /></button>
                       <span>{addons.extraRice}</span>
                       <button className="plus-btn" onClick={() => updateAddon('extraRice', 1)}><Plus size={16} /></button>
+                    </div>
+                  </div>
+                </div>
+
+                <div className={`addon-modern-item ${addons.extraVegetables > 0 ? 'active' : ''}`}>
+                  <div className="addon-icon-box">🥦</div>
+                  <div className="addon-details">
+                    <span className="addon-title">Extra Vegetables</span>
+                    <span className="addon-info">+Serving of fresh veg</span>
+                  </div>
+                  <div className="addon-right">
+                    <span className="addon-cost">+$1.00</span>
+                    <div className="addon-qty-controls">
+                      <button onClick={() => updateAddon('extraVegetables', -1)}><Minus size={16} /></button>
+                      <span>{addons.extraVegetables}</span>
+                      <button className="plus-btn" onClick={() => updateAddon('extraVegetables', 1)}><Plus size={16} /></button>
                     </div>
                   </div>
                 </div>
