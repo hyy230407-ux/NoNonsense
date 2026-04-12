@@ -29,7 +29,6 @@ const CustomizationModal = () => {
   ];
 
   const flavorData = [
-    { id: 'pepper', name: 'Black Pepper', icon: '/images/black_pepper_chicken_flavor.png', color: '#555' },
     { id: 'butter', name: 'Butter Chicken', icon: '/images/butter_chicken_chicken_flavor.png', color: '#ffb347' },
     { id: 'jalapeno', name: 'Jalapeno', icon: '/images/jalapeno_chicken.png', color: '#4ade80' },
     { id: 'nashville', name: 'Nashville Hot Honey', icon: '/images/nashville_chicken.png', color: '#ef4444' },
@@ -47,7 +46,7 @@ const CustomizationModal = () => {
 
   const [selectedBaseSauce, setSelectedBaseSauce] = useState(getDefaultSauce());
   const [extraChickenFlavors, setExtraChickenFlavors] = useState({
-    pepper: 0, butter: 0, jalapeno: 0, nashville: 0, mediterranean: 0, jerk: 0
+    butter: 0, jalapeno: 0, nashville: 0, mediterranean: 0, jerk: 0
   });
   const [extraSauces, setExtraSauces] = useState({
     butter: 0, pepper: 0, ranch: 0
