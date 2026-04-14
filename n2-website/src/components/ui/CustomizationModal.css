@@ -713,6 +713,32 @@
   text-align: center;
 }
 
+.flavor-item.disabled {
+  pointer-events: none;
+}
+
+.flavor-item.disabled .flavor-img {
+  filter: grayscale(1) opacity(0.5);
+}
+
+.flavor-item.disabled .flavor-name {
+  color: #555;
+}
+
+.sold-out-badge {
+  background: rgba(255, 77, 77, 0.1);
+  color: #ff4d4d;
+  font-size: 0.6rem;
+  font-weight: 900;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: 8px;
+  border: 1px solid rgba(255, 77, 77, 0.2);
+  vertical-align: middle;
+  letter-spacing: 0.05em;
+}
+
+
 /* Collection Details */
 .collection-card {
   background: #1a1a1c;

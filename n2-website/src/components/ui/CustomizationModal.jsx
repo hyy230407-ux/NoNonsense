@@ -305,40 +305,51 @@ const CustomizationModal = () => {
                   <div className="accordion-content">
                     <div className="flavor-selection-label">CHOOSE FLAVOUR</div>
                     <div className="flavor-list">
-                      {flavorData.map(flavor => (
-                        <div key={flavor.id} className="flavor-item">
-                          <div className="flavor-left">
-                            <div className="flavor-img">
-                              <img src={flavor.icon} alt={flavor.name} />
+                      {flavorData.map(flavor => {
+                        const isBlocked = ['jerk', 'mediterranean'].includes(flavor.id);
+                        return (
+                          <div key={flavor.id} className={`flavor-item ${isBlocked ? 'disabled' : ''}`}>
+                            <div className="flavor-left">
+                              <div className="flavor-img">
+                                <img src={flavor.icon} alt={flavor.name} />
+                              </div>
+                              <div className="flavor-info">
+                                <div className="flavor-name">
+                                  {flavor.name}
+                                  {isBlocked && <span className="sold-out-badge">SOLD OUT</span>}
+                                </div>
+                                <div className="flavor-meta" style={{ color: isBlocked ? '#444' : flavor.color }}>
+                                  +${flavor.id === 'jerk' ? '2.30' : '1.90'} · 100g serving
+                                </div>
+                              </div>
                             </div>
-                            <div className="flavor-info">
-                              <div className="flavor-name">{flavor.name}</div>
-                              <div className="flavor-meta" style={{ color: flavor.color }}>
-                                +${flavor.id === 'jerk' ? '2.30' : '1.90'} · 100g serving
+                            <div className="flavor-right">
+                              <div className="flavor-qty-controls">
+                                <button 
+                                  className="flavor-qty-btn minus"
+                                  onClick={() => updateFlavor(flavor.id, -1)}
+                                  disabled={extraChickenFlavors[flavor.id] === 0 || isBlocked}
+                                >
+                                  <Minus size={14} />
+                                </button>
+                                <span className="flavor-qty-val">{extraChickenFlavors[flavor.id]}</span>
+                                <button 
+                                  className="flavor-qty-btn plus"
+                                  style={{ 
+                                    backgroundColor: isBlocked ? '#1a1a1c' : flavor.color,
+                                    opacity: isBlocked ? 0.3 : 1,
+                                    cursor: isBlocked ? 'not-allowed' : 'pointer'
+                                  }}
+                                  onClick={() => !isBlocked && updateFlavor(flavor.id, 1)}
+                                  disabled={isBlocked}
+                                >
+                                  <Plus size={14} />
+                                </button>
                               </div>
                             </div>
                           </div>
-                          <div className="flavor-right">
-                            <div className="flavor-qty-controls">
-                              <button 
-                                className="flavor-qty-btn minus"
-                                onClick={() => updateFlavor(flavor.id, -1)}
-                                disabled={extraChickenFlavors[flavor.id] === 0}
-                              >
-                                <Minus size={14} />
-                              </button>
-                              <span className="flavor-qty-val">{extraChickenFlavors[flavor.id]}</span>
-                              <button 
-                                className="flavor-qty-btn plus"
-                                style={{ backgroundColor: flavor.color }}
-                                onClick={() => updateFlavor(flavor.id, 1)}
-                              >
-                                <Plus size={14} />
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   </div>
                 )}
