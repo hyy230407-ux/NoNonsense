@@ -28,7 +28,8 @@ const Menu = () => {
       footerIcon: '🔥',
       footerText: 'Grilled fresh daily · extra virgin olive oil · real ingredients',
       buttonText: 'Order Meal — $6.50',
-      image: '/images/mediterranean_chicken.png'
+      image: '/images/mediterranean_chicken.png',
+      isSoldOut: true
     },
     {
       id: 'm3',
@@ -68,7 +69,8 @@ const Menu = () => {
       footerIcon: '🔥',
       footerText: 'Grilled fresh daily · extra virgin olive oil · real ingredients',
       buttonText: 'Order Meal — $7.00',
-      image: '/images/jerk_chicken.png'
+      image: '/images/jerk_chicken.png',
+      isSoldOut: true
     }
   ];
 
@@ -98,7 +100,8 @@ const Menu = () => {
       description: 'Garlic, oregano, lemon zest and warm herbs create a clean, bright and deeply savoury profile. Fresh, fragrant and incredibly balanced.',
       buttonText: 'Order Snack — $3.30',
       isSnack: true,
-      image: '/images/mediterranean_chicken.png'
+      image: '/images/mediterranean_chicken.png',
+      isSoldOut: true
     },
     {
       id: 's3',
@@ -135,7 +138,8 @@ const Menu = () => {
       description: 'Fiery scotch bonnet heat with allspice, thyme and a smoky char. Punchy, deeply Caribbean and unapologetically bold.',
       buttonText: 'Order Snack — $3.30',
       isSnack: true,
-      image: '/images/jerk_chicken.png'
+      image: '/images/jerk_chicken.png',
+      isSoldOut: true
     }
   ];
 

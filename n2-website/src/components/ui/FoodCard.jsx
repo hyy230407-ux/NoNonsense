@@ -17,18 +17,19 @@ const FoodCard = ({
   footerText,
   buttonText,
   isSnack = false,
-  isDisabled = false
+  isDisabled = false,
+  isSoldOut = false
 }) => {
   const { openCustomizationModal } = useCart();
 
   const handleOrder = () => {
-    if (isDisabled) return;
+    if (isDisabled || isSoldOut) return;
     console.log('Opening customization modal for:', title);
     openCustomizationModal({ id, title, price, image, badge, isSnack });
   };
 
   return (
-    <div className="food-card">
+    <div className={`food-card ${isSoldOut ? 'sold-out' : ''}`}>
       <div className="food-card-image">
         {image ? (
           <img src={image} alt={title} loading="lazy" />
@@ -37,6 +38,7 @@ const FoodCard = ({
             <span>Image</span>
           </div>
         )}
+        {isSoldOut && <div className="sold-out-overlay">SOLD OUT</div>}
       </div>
       
       <div className="food-card-content">
@@ -45,7 +47,7 @@ const FoodCard = ({
             {badge && <span className="tag tag-highlight">{badge}</span>}
             {location && <span className="tag location-tag">{location}</span>}
           </div>
-          <div className="food-card-price">{price}</div>
+          <div className="food-card-price">{isSoldOut ? '—' : price}</div>
         </div>
 
         {features.length > 0 && (
@@ -70,12 +72,12 @@ const FoodCard = ({
         
         <div style={{ marginTop: 'auto' }}>
           <Button 
-            variant={isDisabled ? 'secondary' : (isSnack ? 'secondary' : 'primary')} 
-            className={`food-card-btn btn-full ${isDisabled ? 'btn-disabled' : ''}`}
+            variant={(isDisabled || isSoldOut) ? 'secondary' : (isSnack ? 'secondary' : 'primary')} 
+            className={`food-card-btn btn-full ${(isDisabled || isSoldOut) ? 'btn-disabled' : ''}`}
             onClick={handleOrder}
-            disabled={isDisabled}
+            disabled={isDisabled || isSoldOut}
           >
-            <span>{isDisabled ? 'Coming Soon' : buttonText}</span>
+            <span>{isSoldOut ? 'Sold Out' : (isDisabled ? 'Coming Soon' : buttonText)}</span>
           </Button>
         </div>
       </div>

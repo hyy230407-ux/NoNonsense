@@ -54,16 +54,35 @@ const CustomizationModal = () => {
 
   // Calendar Logic
   const getCurrentLaunchWeekDays = () => {
-    // Current date for logic: April 10, 2026 (Friday)
-    // Next Week: April 13-17
-    // Launch Week restriction: Only Wed (15), Thu (16), Fri (17)
-    return [
-      { id: 'mon', name: 'Mon', date: 'Apr 13', status: 'closed' },
-      { id: 'tue', name: 'Tue', nameFull: 'Tuesday', date: 'Apr 14', status: 'closed' },
-      { id: 'wed', name: 'Wed', nameFull: 'Wednesday', date: '15 Apr', status: 'open' },
-      { id: 'thu', name: 'Thu', nameFull: 'Thursday', date: '16 Apr', status: 'open' },
-      { id: 'fri', name: 'Fri', nameFull: 'Friday', date: '17 Apr', status: 'open' }
+    // Cutoff logic: Pre-orders close at 12:00 AM the day before collection.
+    // Example: For Friday collection, it closes at 12:00 AM on Thursday.
+    
+    const now = new Date();
+    
+    // Hardcoded week for the current launch: April 13-17, 2026
+    const weekDays = [
+      { id: 'mon', name: 'Mon', date: '13 Apr', fullDate: new Date('2026-04-13T00:00:00+08:00') },
+      { id: 'tue', name: 'Tue', nameFull: 'Tuesday', date: '14 Apr', fullDate: new Date('2026-04-14T00:00:00+08:00') },
+      { id: 'wed', name: 'Wed', nameFull: 'Wednesday', date: '15 Apr', fullDate: new Date('2026-04-15T00:00:00+08:00') },
+      { id: 'thu', name: 'Thu', nameFull: 'Thursday', date: '16 Apr', fullDate: new Date('2026-04-16T00:00:00+08:00') },
+      { id: 'fri', name: 'Fri', nameFull: 'Friday', date: '17 Apr', fullDate: new Date('2026-04-17T00:00:00+08:00') }
     ];
+
+    return weekDays.map(day => {
+      // Calculate cutoff: Start of the day before collection day
+      const cutoff = new Date(day.fullDate);
+      cutoff.setDate(cutoff.getDate() - 1);
+      cutoff.setHours(0, 0, 0, 0);
+
+      // A day is open only if current time is before the cutoff
+      const isOpen = now < cutoff;
+      
+      return {
+        ...day,
+        status: isOpen ? 'open' : 'closed',
+        date: day.date // Keeping same display format
+      };
+    });
   };
 
   const [selectedDay, setSelectedDay] = useState('wed');
@@ -306,7 +325,7 @@ const CustomizationModal = () => {
                     <div className="flavor-selection-label">CHOOSE FLAVOUR</div>
                     <div className="flavor-list">
                       {flavorData.map(flavor => {
-                        const isBlocked = ['jerk', 'mediterranean'].includes(flavor.id);
+                        const isBlocked = false; // User requested: "block... the meal choices not the chicken"
                         return (
                           <div key={flavor.id} className={`flavor-item ${isBlocked ? 'disabled' : ''}`}>
                             <div className="flavor-left">
