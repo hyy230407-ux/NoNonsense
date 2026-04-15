@@ -153,7 +153,7 @@ const Menu = () => {
           </div>
 
           <div className="menu-grid">
-            {meals.map(meal => (
+            {meals.filter(meal => !meal.isSoldOut).map(meal => (
               <FoodCard key={meal.id} {...meal} />
             ))}
           </div>
@@ -182,7 +182,7 @@ const Menu = () => {
           </div>
 
           <div className="menu-grid">
-            {snacks.map(snack => (
+            {snacks.filter(snack => !snack.isSoldOut).map(snack => (
               <FoodCard key={snack.id} {...snack} />
             ))}
           </div>

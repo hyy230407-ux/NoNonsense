@@ -324,9 +324,11 @@ const CustomizationModal = () => {
                   <div className="accordion-content">
                     <div className="flavor-selection-label">CHOOSE FLAVOUR</div>
                     <div className="flavor-list">
-                      {flavorData.map(flavor => {
-                        const isBlocked = ['jerk', 'mediterranean'].includes(flavor.id);
-                        return (
+                      {flavorData
+                        .filter(flavor => !['jerk', 'mediterranean'].includes(flavor.id))
+                        .map(flavor => {
+                          const isBlocked = false; // Always false now since we filter them out
+                          return (
                           <div key={flavor.id} className={`flavor-item ${isBlocked ? 'disabled' : ''}`}>
                             <div className="flavor-left">
                               <div className="flavor-img">

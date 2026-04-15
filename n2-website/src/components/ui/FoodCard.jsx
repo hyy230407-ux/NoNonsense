@@ -38,7 +38,6 @@ const FoodCard = ({
             <span>Image</span>
           </div>
         )}
-        {isSoldOut && <div className="sold-out-overlay">SOLD OUT</div>}
       </div>
       
       <div className="food-card-content">
