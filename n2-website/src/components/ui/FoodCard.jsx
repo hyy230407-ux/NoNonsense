@@ -29,7 +29,7 @@ const FoodCard = ({
   };
 
   return (
-    <div className={`food-card ${isSoldOut ? 'sold-out' : ''}`}>
+    <div className={`food-card`}>
       <div className="food-card-image">
         {image ? (
           <img src={image} alt={title} loading="lazy" />
@@ -46,7 +46,7 @@ const FoodCard = ({
             {badge && <span className="tag tag-highlight">{badge}</span>}
             {location && <span className="tag location-tag">{location}</span>}
           </div>
-          <div className="food-card-price">{isSoldOut ? '—' : price}</div>
+          <div className="food-card-price">{price}</div>
         </div>
 
         {features.length > 0 && (
@@ -76,7 +76,7 @@ const FoodCard = ({
             onClick={handleOrder}
             disabled={isDisabled || isSoldOut}
           >
-            <span>{isSoldOut ? 'Sold Out' : (isDisabled ? 'Coming Soon' : buttonText)}</span>
+            <span>{isDisabled ? 'Coming Soon' : buttonText}</span>
           </Button>
         </div>
       </div>
