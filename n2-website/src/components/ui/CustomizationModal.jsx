@@ -69,9 +69,9 @@ const CustomizationModal = () => {
     ];
 
     return weekDays.map(day => {
-      // Calculate cutoff: Start of the day before collection day
+      // Cutoff logic: Pre-orders close at the START of the collection day (12:00 AM).
+      // This allows ordering until the very end of the day before.
       const cutoff = new Date(day.fullDate);
-      cutoff.setDate(cutoff.getDate() - 1);
       cutoff.setHours(0, 0, 0, 0);
 
       // A day is open only if current time is before the cutoff
@@ -325,7 +325,7 @@ const CustomizationModal = () => {
                     <div className="flavor-selection-label">CHOOSE FLAVOUR</div>
                     <div className="flavor-list">
                       {flavorData.map(flavor => {
-                        const isBlocked = false; // User requested: "block... the meal choices not the chicken"
+                        const isBlocked = ['jerk', 'mediterranean'].includes(flavor.id);
                         return (
                           <div key={flavor.id} className={`flavor-item ${isBlocked ? 'disabled' : ''}`}>
                             <div className="flavor-left">
