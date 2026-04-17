@@ -23,7 +23,7 @@ const CustomizationModal = () => {
   });
 
   const sauceData = [
-    { id: 'pepper', name: 'Black Pepper', icon: '/images/black_pepper_sauce_cup.png', color: '#555' },
+    // { id: 'pepper', name: 'Black Pepper', icon: '/images/black_pepper_sauce_cup.png', color: '#555' },
     { id: 'butter', name: 'Butter Chicken', icon: '/images/butter_chicken_sauce_cup.png', color: '#ffb347' },
     { id: 'ranch', name: 'Creamy Ranch', icon: '/images/creamy_ranch_sauce_cup.png', color: '#f8f9fa' }
   ];
@@ -40,7 +40,7 @@ const CustomizationModal = () => {
     if (!meal) return 'ranch';
     const title = meal.title.toLowerCase();
     if (title.includes('butter')) return 'butter';
-    if (title.includes('pepper')) return 'pepper';
+    // if (title.includes('pepper')) return 'pepper';
     return 'ranch';
   };
 
@@ -49,7 +49,7 @@ const CustomizationModal = () => {
     butter: 0, jalapeno: 0, nashville: 0, mediterranean: 0, jerk: 0
   });
   const [extraSauces, setExtraSauces] = useState({
-    butter: 0, pepper: 0, ranch: 0
+    butter: 0, ranch: 0
   });
 
   // Calendar Logic
@@ -411,6 +411,7 @@ const CustomizationModal = () => {
               <div className="addon-modern-list">
 
 
+{/* 
                 <div className={`addon-modern-item ${addons.softBoiledEgg > 0 ? 'active' : ''}`}>
                   <div className="addon-icon-box">🥚</div>
                   <div className="addon-details">
@@ -426,6 +427,7 @@ const CustomizationModal = () => {
                     </div>
                   </div>
                 </div>
+*/}
 
                 <div className={`addon-modern-item ${addons.extraRice > 0 ? 'active' : ''}`}>
                   <div className="addon-icon-box">🍚</div>
