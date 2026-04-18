@@ -54,35 +54,52 @@ const CustomizationModal = () => {
 
   // Calendar Logic
   const getCurrentLaunchWeekDays = () => {
-    // Cutoff logic: Pre-orders close at 12:00 AM the day before collection.
-    // Example: For Friday collection, it closes at 12:00 AM on Thursday.
-    
     const now = new Date();
     
-    // Hardcoded week for the current launch: April 13-17, 2026
-    const weekDays = [
-      { id: 'mon', name: 'Mon', date: '13 Apr', fullDate: new Date('2026-04-13T00:00:00+08:00') },
-      { id: 'tue', name: 'Tue', nameFull: 'Tuesday', date: '14 Apr', fullDate: new Date('2026-04-14T00:00:00+08:00') },
-      { id: 'wed', name: 'Wed', nameFull: 'Wednesday', date: '15 Apr', fullDate: new Date('2026-04-15T00:00:00+08:00') },
-      { id: 'thu', name: 'Thu', nameFull: 'Thursday', date: '16 Apr', fullDate: new Date('2026-04-16T00:00:00+08:00') },
-      { id: 'fri', name: 'Fri', nameFull: 'Friday', date: '17 Apr', fullDate: new Date('2026-04-17T00:00:00+08:00') }
-    ];
+    // Logic: Pre-orders this week are for collection next week.
+    // "Refresh" on Monday: Find the Monday of the NEXT ISO week.
+    const daysToSun = (7 - now.getDay()) % 7;
+    const nextMonday = new Date(now);
+    nextMonday.setDate(now.getDate() + daysToSun + 1);
+    nextMonday.setHours(0, 0, 0, 0);
 
-    return weekDays.map(day => {
-      // Cutoff logic: Pre-orders close at the START of the collection day (12:00 AM).
-      // This allows ordering until the very end of the day before.
-      const cutoff = new Date(day.fullDate);
-      cutoff.setHours(0, 0, 0, 0);
+    const weekDays = [];
+    const dayNamesAbbr = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
+    const dayNamesFull = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
 
-      // A day is open only if current time is before the cutoff
-      const isOpen = now < cutoff;
+    for (let i = 0; i < 5; i++) {
+      const d = new Date(nextMonday);
+      d.setDate(nextMonday.getDate() + i);
       
-      return {
-        ...day,
-        status: isOpen ? 'open' : 'closed',
-        date: day.date // Keeping same display format
-      };
-    });
+      // Formatting to match existing design (e.g., "13 Apr")
+      const dateStr = d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+      
+      weekDays.push({
+        id: dayNamesAbbr[i].toLowerCase(),
+        name: dayNamesAbbr[i],
+        nameFull: dayNamesFull[i],
+        date: dateStr,
+        fullDate: d
+      });
+    }
+
+    // Filter to only include Wed-Fri as per the instruction text
+    return weekDays
+      .filter(day => ['wed', 'thu', 'fri'].includes(day.id))
+      .map(day => {
+        // Cutoff logic: Pre-orders close at the START of the collection day (12:00 AM).
+        const cutoff = new Date(day.fullDate);
+        cutoff.setHours(0, 0, 0, 0);
+
+        // A day is open only if current time is before the cutoff
+        const isOpen = now < cutoff;
+        
+        return {
+          ...day,
+          status: isOpen ? 'open' : 'closed',
+          date: day.date
+        };
+      });
   };
 
   const [selectedDay, setSelectedDay] = useState('wed');
