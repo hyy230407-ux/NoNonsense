@@ -83,10 +83,7 @@ const CustomizationModal = () => {
       });
     }
 
-    // Filter to only include Wed-Fri as per the instruction text
-    return weekDays
-      .filter(day => ['wed', 'thu', 'fri'].includes(day.id))
-      .map(day => {
+    return weekDays.map(day => {
         // Cutoff logic: Pre-orders close at the START of the collection day (12:00 AM).
         const cutoff = new Date(day.fullDate);
         cutoff.setHours(0, 0, 0, 0);
@@ -258,7 +255,7 @@ const CustomizationModal = () => {
                 ))}
               </div>
               <p className="calendar-instruction">
-                Pre-orders this week are for collection on <strong>Wednesday to Friday</strong> next week.
+                Pre-orders this week are for collection on <strong>Monday to Friday</strong> next week.
               </p>
               {error && <div className="selection-error-msg">{error}</div>}
             </section>
