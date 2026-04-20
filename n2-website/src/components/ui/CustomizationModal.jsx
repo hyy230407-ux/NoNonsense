@@ -70,7 +70,6 @@ const CustomizationModal = () => {
       // Only include Monday – Friday
       if (dayOfWeek >= 1 && dayOfWeek <= 5) {
         const cutoff = new Date(checkDate);
-        cutoff.setDate(cutoff.getDate() - 1);
         cutoff.setHours(0, 0, 0, 0);
 
         if (now < cutoff) {
