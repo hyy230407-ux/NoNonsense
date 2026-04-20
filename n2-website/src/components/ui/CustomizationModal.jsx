@@ -55,52 +55,44 @@ const CustomizationModal = () => {
   // Calendar Logic
   const getCurrentLaunchWeekDays = () => {
     const now = new Date();
-    
-    // Logic: Pre-orders are for collection THIS week.
-    // Find the Monday of the CURRENT week.
-    const currentMonday = new Date(now);
-    const day = currentMonday.getDay();
-    const diff = currentMonday.getDate() - day + (day === 0 ? -6 : 1);
-    currentMonday.setDate(diff);
-    currentMonday.setHours(0, 0, 0, 0);
-
     const weekDays = [];
-    const dayNamesAbbr = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
-    const dayNamesFull = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
+    const dayNamesAbbr = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const dayNamesFull = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
-    for (let i = 0; i < 5; i++) {
-      const d = new Date(currentMonday);
-      d.setDate(currentMonday.getDate() + i);
-      
-      // Formatting to match existing design (e.g., "13 Apr")
-      const dateStr = d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
-      
-      weekDays.push({
-        id: dayNamesAbbr[i].toLowerCase(),
-        name: dayNamesAbbr[i],
-        nameFull: dayNamesFull[i],
-        date: dateStr,
-        fullDate: d
-      });
-    }
+    let checkDate = new Date(now);
+    checkDate.setHours(0, 0, 0, 0);
 
-      return weekDays.map(day => {
-        // Cutoff logic: Pre-orders close the day BEFORE collection day at 12:00 AM.
-        // e.g. Monday (4/20) collection closes on Sunday (4/19) at 12:00 AM.
-        const cutoff = new Date(day.fullDate);
+    // Look for the next 5 available weekdays
+    // An available day is a weekday whose cutoff (preceding day at 12:00 AM) has not passed.
+    while (weekDays.length < 5) {
+      const dayOfWeek = checkDate.getDay();
+      
+      // Only include Monday – Friday
+      if (dayOfWeek >= 1 && dayOfWeek <= 5) {
+        const cutoff = new Date(checkDate);
         cutoff.setDate(cutoff.getDate() - 1);
         cutoff.setHours(0, 0, 0, 0);
 
-        // A day is open only if current time is before the cutoff
-        const isOpen = now < cutoff;
-        
-        return {
-          ...day,
-          status: isOpen ? 'open' : 'closed',
-          date: day.date
-        };
-      });
-    };
+        if (now < cutoff) {
+          const dateStr = checkDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
+          weekDays.push({
+            id: `${dayNamesAbbr[dayOfWeek].toLowerCase()}-${checkDate.getDate()}-${checkDate.getMonth()}`,
+            name: dayNamesAbbr[dayOfWeek],
+            nameFull: dayNamesFull[dayOfWeek],
+            date: dateStr,
+            fullDate: new Date(checkDate),
+            status: 'open'
+          });
+        }
+      }
+      checkDate.setDate(checkDate.getDate() + 1);
+      
+      // Safety break to prevent infinite loop
+      if (weekDays.length === 0 && checkDate.getTime() > now.getTime() + 14 * 24 * 60 * 60 * 1000) break;
+    }
+
+    return weekDays;
+  };
 
   const weekDays = getCurrentLaunchWeekDays();
   const firstOpenDay = weekDays.find(d => d.status === 'open')?.id || '';
@@ -260,7 +252,7 @@ const CustomizationModal = () => {
                 ))}
               </div>
               <p className="calendar-instruction">
-                Pre-orders are for collection on <strong>Monday to Friday</strong> this week.
+                Select your preferred collection day. Orders close at <strong>12:00 AM</strong> on the day before collection.
               </p>
               {error && <div className="selection-error-msg">{error}</div>}
             </section>
