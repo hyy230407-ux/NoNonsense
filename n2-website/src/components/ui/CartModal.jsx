@@ -239,7 +239,7 @@ const CartModal = () => {
               
               <div className="collection-reminder mt-20">
                 <AlertTriangle size={18} className="text-cyan" />
-                <p><strong>Next-Day Collection:</strong> Your meals will be ready for pickup tomorrow between 11 AM – 3 PM at N2 Kiosk (North Canteen).</p>
+                <p><strong>Collection Day:</strong> Your meals will be ready for pickup on your selected day(s) between 11 AM – 3 PM at N2 Kiosk (North Canteen).</p>
               </div>
               
               <div className="order-summary-mini mt-20">
@@ -261,7 +261,7 @@ const CartModal = () => {
               <h3>Thank You, {formData.name.split(' ')[0]}!</h3>
               <p className="text-gray text-center mt-10">
                 Your order for ${totalPrice} has been placed.<br />
-                <strong>Collection:</strong> Tomorrow, 11 AM – 3 PM.<br />
+                <strong>Collection:</strong> On your selected day(s), 11 AM – 3 PM.<br />
                 We'll contact you shortly.
               </p>
             </div>

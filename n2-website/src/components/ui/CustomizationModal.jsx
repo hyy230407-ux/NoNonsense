@@ -83,9 +83,11 @@ const CustomizationModal = () => {
       });
     }
 
-    return weekDays.map(day => {
-        // Cutoff logic: Pre-orders close at the START of the collection day (12:00 AM).
+      return weekDays.map(day => {
+        // Cutoff logic: Pre-orders close the day BEFORE collection day at 12:00 AM.
+        // e.g. Monday (4/20) collection closes on Sunday (4/19) at 12:00 AM.
         const cutoff = new Date(day.fullDate);
+        cutoff.setDate(cutoff.getDate() - 1);
         cutoff.setHours(0, 0, 0, 0);
 
         // A day is open only if current time is before the cutoff
@@ -97,9 +99,11 @@ const CustomizationModal = () => {
           date: day.date
         };
       });
-  };
+    };
 
-  const [selectedDay, setSelectedDay] = useState('wed');
+  const weekDays = getCurrentLaunchWeekDays();
+  const firstOpenDay = weekDays.find(d => d.status === 'open')?.id || '';
+  const [selectedDay, setSelectedDay] = useState(firstOpenDay);
   const [isExtraChickenOpen, setIsExtraChickenOpen] = useState(true);
   const [error, setError] = useState(null);
 
@@ -192,7 +196,7 @@ const CustomizationModal = () => {
         })
     ];
 
-    const dayInfo = getCurrentLaunchWeekDays().find(d => d.id === selectedDay);
+    const dayInfo = weekDays.find(d => d.id === selectedDay);
 
     const customizedItem = {
       ...meal,
@@ -238,7 +242,7 @@ const CustomizationModal = () => {
             <section className="modal-section collection-calendar-section">
               <h3 className="section-label">SELECT COLLECTION DAY</h3>
               <div className="calendar-selection-grid">
-                {getCurrentLaunchWeekDays().map((day) => (
+                {weekDays.map((day) => (
                   <button 
                     key={day.id}
                     className={`calendar-day-btn ${day.status} ${selectedDay === day.id ? 'active' : ''}`}
