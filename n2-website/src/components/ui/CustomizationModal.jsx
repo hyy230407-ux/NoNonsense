@@ -56,20 +56,21 @@ const CustomizationModal = () => {
   const getCurrentLaunchWeekDays = () => {
     const now = new Date();
     
-    // Logic: Pre-orders this week are for collection next week.
-    // "Refresh" on Monday: Find the Monday of the NEXT ISO week.
-    const daysToSun = (7 - now.getDay()) % 7;
-    const nextMonday = new Date(now);
-    nextMonday.setDate(now.getDate() + daysToSun + 1);
-    nextMonday.setHours(0, 0, 0, 0);
+    // Logic: Pre-orders are for collection THIS week.
+    // Find the Monday of the CURRENT week.
+    const currentMonday = new Date(now);
+    const day = currentMonday.getDay();
+    const diff = currentMonday.getDate() - day + (day === 0 ? -6 : 1);
+    currentMonday.setDate(diff);
+    currentMonday.setHours(0, 0, 0, 0);
 
     const weekDays = [];
     const dayNamesAbbr = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri'];
     const dayNamesFull = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'];
 
     for (let i = 0; i < 5; i++) {
-      const d = new Date(nextMonday);
-      d.setDate(nextMonday.getDate() + i);
+      const d = new Date(currentMonday);
+      d.setDate(currentMonday.getDate() + i);
       
       // Formatting to match existing design (e.g., "13 Apr")
       const dateStr = d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
@@ -259,7 +260,7 @@ const CustomizationModal = () => {
                 ))}
               </div>
               <p className="calendar-instruction">
-                Pre-orders this week are for collection on <strong>Monday to Friday</strong> next week.
+                Pre-orders are for collection on <strong>Monday to Friday</strong> this week.
               </p>
               {error && <div className="selection-error-msg">{error}</div>}
             </section>
