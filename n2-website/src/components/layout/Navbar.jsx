@@ -2,6 +2,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { User, ShoppingBag, Menu, X } from 'lucide-react';
 import { useState } from 'react';
 import { useCart } from '../../context/CartContext';
+import { CONFIG } from '../../config';
 import './Navbar.css';
 
 const Navbar = () => {
@@ -29,8 +30,12 @@ const Navbar = () => {
             <button className="btn-login" onClick={closeMenu}>
               <User size={16} className="icon-mr" /> Login
             </button>
-            <button className="btn-order" onClick={closeMenu}>
-              <span className="sparkle">✦</span> Order Now
+            <button 
+              className={`btn-order ${CONFIG.ORDERS_PAUSED ? 'btn-disabled' : ''}`} 
+              onClick={closeMenu}
+              disabled={CONFIG.ORDERS_PAUSED}
+            >
+              <span className="sparkle">✦</span> {CONFIG.ORDERS_PAUSED ? 'Orders Paused' : 'Order Now'}
             </button>
           </div>
         </div>
@@ -48,8 +53,11 @@ const Navbar = () => {
               <User size={16} className="icon-mr" /> Login
             </button>
             
-            <button className="btn-order">
-              <span className="sparkle">✦</span> Order Now
+            <button 
+              className={`btn-order ${CONFIG.ORDERS_PAUSED ? 'btn-disabled' : ''}`}
+              disabled={CONFIG.ORDERS_PAUSED}
+            >
+              <span className="sparkle">✦</span> {CONFIG.ORDERS_PAUSED ? 'Orders Paused' : 'Order Now'}
             </button>
           </div>
 

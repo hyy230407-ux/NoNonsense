@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { X, Calendar, Minus, Plus, ShoppingBag, ChevronDown, ChevronUp } from 'lucide-react';
 import Button from './Button';
 import { useCart } from '../../context/CartContext';
+import { CONFIG } from '../../config';
 import './CustomizationModal.css';
 
 const CustomizationModal = () => {
@@ -495,12 +496,13 @@ const CustomizationModal = () => {
             <span className="summary-total">${calculateTotal()}</span>
           </div>
           <Button 
-            variant="primary" 
-            className="btn-full checkout-btn"
+            variant={(CONFIG.ORDERS_PAUSED || !selectedDay) ? 'secondary' : 'primary'} 
+            className={`btn-full checkout-btn ${(CONFIG.ORDERS_PAUSED || !selectedDay) ? 'btn-disabled' : ''}`}
             onClick={handleAddToCart}
+            disabled={CONFIG.ORDERS_PAUSED || !selectedDay}
           >
             <ShoppingBag size={20} />
-            <span>Add to Cart</span>
+            <span>{CONFIG.ORDERS_PAUSED ? 'Orders Paused' : 'Add to Cart'}</span>
           </Button>
         </div>
       </div>

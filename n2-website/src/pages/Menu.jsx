@@ -1,4 +1,5 @@
 import FoodCard from '../components/ui/FoodCard';
+import { CONFIG } from '../config';
 import './Menu.css';
 
 const Menu = () => {
@@ -146,6 +147,15 @@ const Menu = () => {
   return (
     <div className="menu-page">
       <div className="container pt-60">
+        {CONFIG.ORDERS_PAUSED && (
+          <div className="orders-paused-banner">
+            <div className="banner-content">
+              <span className="banner-icon">🔔</span>
+              <p>{CONFIG.PAUSE_MESSAGE}</p>
+            </div>
+          </div>
+        )}
+
         <section className="menu-section">
           <div className="section-header">
             <span className="section-badge text-cyan bg-cyan-alpha">From $6.50</span>
@@ -154,7 +164,7 @@ const Menu = () => {
 
           <div className="menu-grid">
             {meals.filter(meal => !meal.isSoldOut).map(meal => (
-              <FoodCard key={meal.id} {...meal} />
+              <FoodCard key={meal.id} {...meal} isDisabled={CONFIG.ORDERS_PAUSED} />
             ))}
           </div>
         </section>

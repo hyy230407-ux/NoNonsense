@@ -76,7 +76,7 @@ const FoodCard = ({
             onClick={handleOrder}
             disabled={isDisabled || isSoldOut}
           >
-            <span>{isDisabled ? 'Coming Soon' : buttonText}</span>
+            <span>{isDisabled ? 'Orders Paused' : buttonText}</span>
           </Button>
         </div>
       </div>
