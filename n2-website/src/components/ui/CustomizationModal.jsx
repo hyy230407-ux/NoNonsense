@@ -72,7 +72,11 @@ const CustomizationModal = () => {
         const cutoff = new Date(checkDate);
         cutoff.setHours(0, 0, 0, 0);
 
-        if (now < cutoff) {
+        const pauseStart = new Date(2026, 3, 27); // April 27
+        const pauseEnd = new Date(2026, 4, 1);   // May 1
+        const isPaused = checkDate >= pauseStart && checkDate <= pauseEnd;
+
+        if (now < cutoff && !isPaused) {
           const dateStr = checkDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
           weekDays.push({
             id: `${dayNamesAbbr[dayOfWeek].toLowerCase()}-${checkDate.getDate()}-${checkDate.getMonth()}`,
