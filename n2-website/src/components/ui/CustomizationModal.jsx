@@ -63,11 +63,15 @@ const CustomizationModal = () => {
     let checkDate = new Date(now);
     checkDate.setHours(0, 0, 0, 0);
 
-    // Look for the next 5 available weekdays
-    // An available day is a weekday whose cutoff (preceding day at 12:00 AM) has not passed.
+    let endOfWeek = null;
+
+    // Look for available weekdays in a single week block
     while (weekDays.length < 5) {
       const dayOfWeek = checkDate.getDay();
       
+      // If we've defined an end of week and passed it, stop
+      if (endOfWeek && checkDate > endOfWeek) break;
+
       // Only include Monday – Friday
       if (dayOfWeek >= 1 && dayOfWeek <= 5) {
         const cutoff = new Date(checkDate);
@@ -86,12 +90,19 @@ const CustomizationModal = () => {
             fullDate: new Date(checkDate),
             status: 'open'
           });
+
+          // Set endOfWeek to the Friday of the current week block
+          if (!endOfWeek) {
+            endOfWeek = new Date(checkDate);
+            endOfWeek.setDate(checkDate.getDate() + (5 - dayOfWeek));
+            endOfWeek.setHours(23, 59, 59, 999);
+          }
         }
       }
       checkDate.setDate(checkDate.getDate() + 1);
       
       // Safety break to prevent infinite loop
-      if (weekDays.length === 0 && checkDate.getTime() > now.getTime() + 14 * 24 * 60 * 60 * 1000) break;
+      if (checkDate.getTime() > now.getTime() + 21 * 24 * 60 * 60 * 1000) break;
     }
 
     return weekDays;
