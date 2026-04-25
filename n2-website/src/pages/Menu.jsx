@@ -19,20 +19,6 @@ const Menu = () => {
       image: '/images/butter_chicken.png'
     },
     {
-      id: 'm2',
-      title: 'Mediterranean Herbs & Spices',
-      location: 'Mediterranean Coast',
-      price: '$6.50',
-      features: ['Fresh', 'Fragrant', 'Balanced'],
-      subtitle: 'Inspired by the coastal kitchens of the Mediterranean.',
-      description: 'Garlic, oregano, lemon zest and warm herbs create a clean, bright and deeply savoury profile. Fresh, fragrant and incredibly balanced.',
-      footerIcon: '🔥',
-      footerText: 'Grilled fresh daily · extra virgin olive oil · real ingredients',
-      buttonText: 'Order Meal — $6.50',
-      image: '/images/mediterranean_chicken.png',
-      isSoldOut: true
-    },
-    {
       id: 'm3',
       title: 'Nashville Hot Honey',
       location: 'Southern USA',
@@ -46,22 +32,9 @@ const Menu = () => {
       image: '/images/nashville_chicken.png'
     },
     {
-      id: 'm4',
-      title: 'Mexican Jalapeño',
-      location: 'Mexico',
-      price: '$6.50',
-      features: ['Smoky', 'Zesty', 'Bold'],
-      subtitle: 'Bright heat, bold smokiness, real Mexican soul.',
-      description: 'Jalapeño, chipotle and lime-forward marinade with a punchy, vibrant bite. Smoky, zesty and full of character.',
-      footerIcon: '🔥',
-      footerText: 'Grilled fresh daily · extra virgin olive oil · real ingredients',
-      buttonText: 'Order Meal — $6.50',
-      image: '/images/mexican_chicken.png'
-    },
-    {
       id: 'm5',
-      title: 'Jerk Chicken',
-      badge: '👑 Premium',
+      title: 'Jamaican Jerk',
+      badge: '🔥 New',
       location: 'Kingston, Jamaica',
       price: '$7.00',
       features: ['Smoky', 'Fiery', 'Caribbean'],
@@ -70,8 +43,7 @@ const Menu = () => {
       footerIcon: '🔥',
       footerText: 'Grilled fresh daily · extra virgin olive oil · real ingredients',
       buttonText: 'Order Meal — $7.00',
-      image: '/images/jerk_chicken.png',
-      isSoldOut: true
+      image: '/images/jerk_chicken.png'
     }
   ];
 
@@ -92,19 +64,6 @@ const Menu = () => {
       image: '/images/butter_chicken.png'
     },
     {
-      id: 's2',
-      title: 'Mediterranean Herbs & Spices',
-      location: 'Mediterranean Coast',
-      price: '$3.30',
-      features: ['Fresh', 'Fragrant', 'Balanced'],
-      subtitle: 'Inspired by the coastal kitchens of the Mediterranean.',
-      description: 'Garlic, oregano, lemon zest and warm herbs create a clean, bright and deeply savoury profile. Fresh, fragrant and incredibly balanced.',
-      buttonText: 'Order Snack — $3.30',
-      isSnack: true,
-      image: '/images/mediterranean_chicken.png',
-      isSoldOut: true
-    },
-    {
       id: 's3',
       title: 'Nashville Hot Honey',
       location: 'Southern USA',
@@ -117,21 +76,9 @@ const Menu = () => {
       image: '/images/nashville_chicken.png'
     },
     {
-      id: 's4',
-      title: 'Mexican Jalapeño',
-      location: 'Mexico',
-      price: '$3.30',
-      features: ['Smoky', 'Zesty', 'Bold'],
-      subtitle: 'Bright heat, bold smokiness, real Mexican soul.',
-      description: 'Jalapeño, chipotle and lime-forward marinade with a punchy, vibrant bite. Smoky, zesty and full of character.',
-      buttonText: 'Order Snack — $3.30',
-      isSnack: true,
-      image: '/images/mexican_chicken.png'
-    },
-    {
       id: 's5',
-      title: 'Jerk Chicken',
-      badge: '👑 Premium',
+      title: 'Jamaican Jerk',
+      badge: '🔥 New',
       location: 'Kingston, Jamaica',
       price: '$3.30',
       features: ['Smoky', 'Fiery', 'Caribbean'],
@@ -139,8 +86,7 @@ const Menu = () => {
       description: 'Fiery scotch bonnet heat with allspice, thyme and a smoky char. Punchy, deeply Caribbean and unapologetically bold.',
       buttonText: 'Order Snack — $3.30',
       isSnack: true,
-      image: '/images/jerk_chicken.png',
-      isSoldOut: true
+      image: '/images/jerk_chicken.png'
     }
   ];
 
