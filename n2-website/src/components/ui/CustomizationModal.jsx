@@ -80,7 +80,10 @@ const CustomizationModal = () => {
         // Block Friday May 1st 2026 (Public Holiday)
         const isPublicHoliday = checkDate.getDate() === 1 && checkDate.getMonth() === 4 && checkDate.getFullYear() === 2026;
 
-        if (now < cutoff && !isPublicHoliday) {
+        // Block next week (May 4th to May 8th 2026)
+        const isNextWeekBlocked = checkDate.getFullYear() === 2026 && checkDate.getMonth() === 4 && checkDate.getDate() >= 4 && checkDate.getDate() <= 8;
+
+        if (now < cutoff && !isPublicHoliday && !isNextWeekBlocked) {
           const dateStr = checkDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
           weekDays.push({
             id: `${dayNamesAbbr[dayOfWeek].toLowerCase()}-${checkDate.getDate()}-${checkDate.getMonth()}`,
