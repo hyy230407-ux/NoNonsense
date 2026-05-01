@@ -11,11 +11,11 @@ const GrabGo = () => {
 
   const meals = [
     {
-      id: 'jerk',
-      title: 'Jamaican Jerk',
+      id: 'mediterranean',
+      title: 'Mediterranean',
       subtitle: 'FUEL BOX',
-      image: '/images/jerk_chicken.png',
-      color: 'var(--accent-cyan)'
+      image: '/images/mediterranean_chicken.png',
+      color: '#60a5fa'
     },
     {
       id: 'mexican',

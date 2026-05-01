@@ -80,10 +80,7 @@ const CustomizationModal = () => {
         // Block Friday May 1st 2026 (Public Holiday)
         const isPublicHoliday = checkDate.getDate() === 1 && checkDate.getMonth() === 4 && checkDate.getFullYear() === 2026;
 
-        // Block next week (May 4th to May 8th 2026)
-        const isNextWeekBlocked = checkDate.getFullYear() === 2026 && checkDate.getMonth() === 4 && checkDate.getDate() >= 4 && checkDate.getDate() <= 8;
-
-        if (now < cutoff && !isPublicHoliday && !isNextWeekBlocked) {
+        if (now < cutoff && !isPublicHoliday) {
           const dateStr = checkDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
           weekDays.push({
             id: `${dayNamesAbbr[dayOfWeek].toLowerCase()}-${checkDate.getDate()}-${checkDate.getMonth()}`,
@@ -353,7 +350,7 @@ const CustomizationModal = () => {
                     <div className="flavor-selection-label">CHOOSE FLAVOUR</div>
                     <div className="flavor-list">
                       {flavorData
-                        .filter(flavor => !['jalapeno', 'mediterranean'].includes(flavor.id))
+                        .filter(flavor => !['jalapeno', 'jerk'].includes(flavor.id))
                         .map(flavor => {
                           const isBlocked = false; 
                           return (

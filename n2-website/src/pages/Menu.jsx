@@ -32,18 +32,17 @@ const Menu = () => {
       image: '/images/nashville_chicken.png'
     },
     {
-      id: 'm5',
-      title: 'Jamaican Jerk',
-      badge: '🔥 New',
-      location: 'Kingston, Jamaica',
-      price: '$7.00',
-      features: ['Smoky', 'Fiery', 'Caribbean'],
-      subtitle: 'Inspired by the bold jerk pits of Kingston.',
-      description: 'Fiery scotch bonnet heat with allspice, thyme and a smoky char. Punchy, deeply Caribbean and unapologetically bold.',
+      id: 'm2',
+      title: 'Mediterranean Herbs & Spices',
+      location: 'Mediterranean Coast',
+      price: '$6.50',
+      features: ['Fresh', 'Fragrant', 'Balanced'],
+      subtitle: 'Inspired by the coastal kitchens of the Mediterranean.',
+      description: 'Garlic, oregano, lemon zest and warm herbs create a clean, bright and deeply savoury profile. Fresh, fragrant and incredibly balanced.',
       footerIcon: '🔥',
       footerText: 'Grilled fresh daily · extra virgin olive oil · real ingredients',
-      buttonText: 'Order Meal — $7.00',
-      image: '/images/jerk_chicken.png'
+      buttonText: 'Order Meal — $6.50',
+      image: '/images/mediterranean_chicken.png'
     }
   ];
 
@@ -76,17 +75,16 @@ const Menu = () => {
       image: '/images/nashville_chicken.png'
     },
     {
-      id: 's5',
-      title: 'Jamaican Jerk',
-      badge: '🔥 New',
-      location: 'Kingston, Jamaica',
+      id: 's2',
+      title: 'Mediterranean Herbs & Spices',
+      location: 'Mediterranean Coast',
       price: '$3.30',
-      features: ['Smoky', 'Fiery', 'Caribbean'],
-      subtitle: 'Inspired by the bold jerk pits of Kingston.',
-      description: 'Fiery scotch bonnet heat with allspice, thyme and a smoky char. Punchy, deeply Caribbean and unapologetically bold.',
+      features: ['Fresh', 'Fragrant', 'Balanced'],
+      subtitle: 'Inspired by the coastal kitchens of the Mediterranean.',
+      description: 'Garlic, oregano, lemon zest and warm herbs create a clean, bright and deeply savoury profile. Fresh, fragrant and incredibly balanced.',
       buttonText: 'Order Snack — $3.30',
       isSnack: true,
-      image: '/images/jerk_chicken.png'
+      image: '/images/mediterranean_chicken.png'
     }
   ];
 
