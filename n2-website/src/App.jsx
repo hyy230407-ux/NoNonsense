@@ -6,11 +6,11 @@ import Menu from './pages/Menu';
 import About from './pages/About';
 import Track from './pages/Track';
 import GrabGo from './pages/GrabGo';
+import Staff from './pages/Staff';
 import { CartProvider } from './context/CartContext';
 import CartModal from './components/ui/CartModal';
 import CustomizationModal from './components/ui/CustomizationModal';
 import './index.css';
-
 
 function App() {
   return (
@@ -26,13 +26,13 @@ function App() {
               {/* <Route path="/grab-go" element={<GrabGo />} /> */}
               <Route path="/about" element={<About />} />
               <Route path="/track" element={<Track />} />
+              <Route path="/staff" element={<Staff />} />
             </Routes>
           </main>
           <Footer />
           <CartModal />
           <CustomizationModal />
         </div>
-
       </Router>
     </CartProvider>
   );
