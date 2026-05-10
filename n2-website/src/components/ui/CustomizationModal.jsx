@@ -350,7 +350,7 @@ const CustomizationModal = () => {
                     <div className="flavor-selection-label">CHOOSE FLAVOUR</div>
                     <div className="flavor-list">
                       {flavorData
-                        .filter(flavor => !['jalapeno', 'jerk'].includes(flavor.id))
+                        .filter(flavor => !['jalapeno', 'mediterranean'].includes(flavor.id))
                         .map(flavor => {
                           const isBlocked = false; 
                           return (
