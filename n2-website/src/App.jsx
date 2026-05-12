@@ -7,6 +7,7 @@ import About from './pages/About';
 import Track from './pages/Track';
 import GrabGo from './pages/GrabGo';
 import Staff from './pages/Staff';
+import OrderSuccess from './pages/OrderSuccess';
 import { CartProvider } from './context/CartContext';
 import CartModal from './components/ui/CartModal';
 import CustomizationModal from './components/ui/CustomizationModal';
@@ -27,6 +28,7 @@ function App() {
               <Route path="/about" element={<About />} />
               <Route path="/track" element={<Track />} />
               <Route path="/staff" element={<Staff />} />
+              <Route path="/order-success" element={<OrderSuccess />} />
             </Routes>
           </main>
           <Footer />
@@ -35,6 +37,10 @@ function App() {
         </div>
       </Router>
     </CartProvider>
+  );
+}
+
+export default App;    </CartProvider>
   );
 }
 
