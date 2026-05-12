@@ -40,14 +40,4 @@ function App() {
   );
 }
 
-export default App;        </div>
-      </Router>
-    </CartProvider>
-  );
-}
-
-export default App;    </CartProvider>
-  );
-}
-
 export default App;
