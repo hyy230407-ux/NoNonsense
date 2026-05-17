@@ -1,12 +1,13 @@
 /**
  * Vercel Serverless Function: /api/create-payment
- * Creates a HitPay PayNow payment request and stages the order in GAS as PENDING.
- * 
+ * Creates a HitPay PayNow payment request.
+ * Order data is encoded in the payment purpose field — nothing is logged to
+ * Google Sheets until HitPay confirms payment via webhook.
+ *
  * Environment variables required in Vercel:
- *   HITPAY_API_KEY  — your live HitPay API key
- *   HITPAY_SALT     — your HitPay salt
- *   GAS_URL         — your Google Apps Script deployment URL
- *   SITE_URL        — https://nononsense.sg (or your current Vercel URL)
+ *   HITPAY_API_KEY  — live HitPay API key
+ *   HITPAY_SALT     — API salt (from HitPay API Keys page)
+ *   SITE_URL        — https://no-nonsense-five.vercel.app (or nononsense.sg once DNS fixed)
  */
 
 export default async function handler(req, res) {
@@ -26,28 +27,11 @@ export default async function handler(req, res) {
     const reference = `N2-${Date.now()}`;
     const amount = parseFloat(String(totalPrice).replace(/[^0-9.]/g, '')).toFixed(2);
 
-    // 1. Stage the order in GAS as PENDING
-    const gasRes = await fetch(process.env.GAS_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        action: 'stage',
-        reference,
-        name,
-        email: email || '',
-        phone: phone || '',
-        items,
-        totalPrice: amount,
-        notes: notes || ''
-      })
-    });
+    // Encode full order data in the purpose field so the webhook can retrieve it
+    const orderPayload = { name, email: email || '', phone: phone || '', items, totalPrice: amount, notes: notes || '' };
+    const encodedOrder = Buffer.from(JSON.stringify(orderPayload)).toString('base64');
 
-    if (!gasRes.ok) {
-      console.error('GAS staging failed:', await gasRes.text());
-      return res.status(500).json({ error: 'Failed to stage order' });
-    }
-
-    // 2. Create HitPay payment request
+    // Create HitPay payment request — order is NOT logged to Sheets yet
     const hitpayRes = await fetch('https://api.hit-pay.com/v1/payment-requests', {
       method: 'POST',
       headers: {
@@ -62,6 +46,7 @@ export default async function handler(req, res) {
         email: email || undefined,
         phone: phone || undefined,
         reference_number: reference,
+        purpose: encodedOrder,
         redirect_url: `${process.env.SITE_URL}/order-success?ref=${reference}`,
         webhook: `${process.env.SITE_URL}/api/payment-webhook`
       })
@@ -70,14 +55,11 @@ export default async function handler(req, res) {
     const hitpayData = await hitpayRes.json();
 
     if (!hitpayRes.ok) {
-      console.error('HitPay error:', hitpayData);
+      console.error('HitPay error:', JSON.stringify(hitpayData));
       return res.status(500).json({ error: 'Failed to create payment', details: hitpayData });
     }
 
-    return res.status(200).json({
-      url: hitpayData.url,
-      reference
-    });
+    return res.status(200).json({ url: hitpayData.url, reference });
 
   } catch (err) {
     console.error('create-payment error:', err);
