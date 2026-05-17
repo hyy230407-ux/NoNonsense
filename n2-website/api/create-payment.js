@@ -1,13 +1,7 @@
 /**
  * Vercel Serverless Function: /api/create-payment
- * Creates a HitPay PayNow payment request.
- * Order data is encoded in the payment purpose field — nothing is logged to
- * Google Sheets until HitPay confirms payment via webhook.
- *
- * Environment variables required in Vercel:
- *   HITPAY_API_KEY  — live HitPay API key
- *   HITPAY_SALT     — API salt (from HitPay API Keys page)
- *   SITE_URL        — https://no-nonsense-five.vercel.app (or nononsense.sg once DNS fixed)
+ * Saves order to a hidden "Pending Orders" sheet, then creates HitPay payment.
+ * Nothing appears in the date tabs until payment is confirmed by webhook.
  */
 
 export default async function handler(req, res) {
@@ -27,11 +21,27 @@ export default async function handler(req, res) {
     const reference = `N2-${Date.now()}`;
     const amount = parseFloat(String(totalPrice).replace(/[^0-9.]/g, '')).toFixed(2);
 
-    // Encode full order data in the purpose field so the webhook can retrieve it
-    const orderPayload = { name, email: email || '', phone: phone || '', items, totalPrice: amount, notes: notes || '' };
-    const encodedOrder = Buffer.from(JSON.stringify(orderPayload)).toString('base64');
+    // Save to Pending Orders sheet — does NOT appear in date tabs yet
+    const gasRes = await fetch(process.env.GAS_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'stage_pending',
+        reference,
+        name,
+        email: email || '',
+        phone: phone || '',
+        items,
+        totalPrice: amount,
+        notes: notes || ''
+      })
+    });
 
-    // Create HitPay payment request — order is NOT logged to Sheets yet
+    if (!gasRes.ok) {
+      console.error('GAS staging failed');
+    }
+
+    // Create HitPay payment — purpose is just the short reference
     const hitpayRes = await fetch('https://api.hit-pay.com/v1/payment-requests', {
       method: 'POST',
       headers: {
@@ -46,7 +56,7 @@ export default async function handler(req, res) {
         email: email || undefined,
         phone: phone || undefined,
         reference_number: reference,
-        purpose: encodedOrder,
+        purpose: `N2 Order ${reference}`,
         redirect_url: `${process.env.SITE_URL}/order-success?ref=${reference}`,
         webhook: `${process.env.SITE_URL}/api/payment-webhook`
       })
